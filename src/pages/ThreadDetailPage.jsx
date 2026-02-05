@@ -1,124 +1,160 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getThreadById } from '../api/threadsApi';
+import {
+  fetchThreadDetail,
+  voteOnThread,
+  clearThreadDetail,
+} from '../features/threads/threadsSlice';
 import { addComment } from '../features/comments/commentsSlice';
-import { voteThread } from '../api/threadsApi';
-import { voteComment } from '../api/commentsApi';
-import VoteButton from '../components/VoteButton/VoteButton';
 
 export default function ThreadDetailPage() {
   const { threadId } = useParams();
-  const [thread, setThread] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [newComment, setNewComment] = useState('');
-
   const dispatch = useDispatch();
-  const { comments } = useSelector(state => state.comments);
-  const token = useSelector(state => state.auth.token);
+
+  const { threadDetail, loading } = useSelector((state) => state.threads);
+  const authUser = useSelector((state) => state.auth.user);
+  const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
-    const fetchThread = async () => {
-      setLoading(true);
-      const data = await getThreadById(threadId);
-      setThread(data);
-      dispatch({ type: 'comments/setComments', payload: data.comments });
-      setLoading(false);
-    };
-    fetchThread();
-  }, [threadId, dispatch]);
+    dispatch(fetchThreadDetail(threadId));
+    return () => dispatch(clearThreadDetail());
+  }, [dispatch, threadId]);
+
+  if (loading || !threadDetail) {
+    return <p className="loading-text">Loading thread...</p>;
+  }
+
+  const comments = threadDetail.comments || [];
+
+  const isUpVoted =
+    authUser && threadDetail.upVotesBy?.includes(authUser.id);
+
+  const isDownVoted =
+    authUser && threadDetail.downVotesBy?.includes(authUser.id);
+
+  const handleVote = (type) => {
+    if (!token) {
+      alert('Login dulu buat vote');
+      return;
+    }
+
+    dispatch(
+      voteOnThread({
+        threadId,
+        voteType: type,
+      })
+    );
+  };
 
   const handleAddComment = (e) => {
     e.preventDefault();
-    if (!token) return alert('Login required!');
-    dispatch(addComment({ threadId, content: newComment, token }));
-    setNewComment('');
-  };
 
-  // Thread vote handler
-  const handleThreadVote = async (voteType) => {
-    if (!token) return alert('Login required!');
-    // Optimistic UI update
-    const prevUpVotes = thread.upVotesBy || [];
-    const prevDownVotes = thread.downVotesBy || [];
-
-    if (voteType === 1) {
-      thread.upVotesBy = prevUpVotes.includes('me') ? prevUpVotes : [...prevUpVotes, 'me'];
-      thread.downVotesBy = prevDownVotes.filter(u => u !== 'me');
-    } else if (voteType === -1) {
-      thread.downVotesBy = prevDownVotes.includes('me') ? prevDownVotes : [...prevDownVotes, 'me'];
-      thread.upVotesBy = prevUpVotes.filter(u => u !== 'me');
-    } else {
-      // neutral
-      thread.upVotesBy = prevUpVotes.filter(u => u !== 'me');
-      thread.downVotesBy = prevDownVotes.filter(u => u !== 'me');
+    if (!token) {
+      alert('Login dulu buat komentar');
+      return;
     }
 
-    setThread({ ...thread });
-    await voteThread(threadId, voteType, token);
+    const content = e.target.comment.value.trim();
+    if (!content) return;
+
+    dispatch(
+      addComment({
+        threadId,
+        content,
+      })
+    );
+
+    e.target.reset();
   };
-
-  // Comment vote handler
-  const handleCommentVote = async (commentId, voteType) => {
-    if (!token) return alert('Login required!');
-    await voteComment(threadId, commentId, voteType, token);
-    // Optional: fetch comments again or optimistic update similar to thread
-  };
-
-  if (loading) return <p>Loading thread...</p>;
-  if (!thread) return <p>Thread not found</p>;
-
-  // Determine current vote for thread
-  const currentThreadVote = thread.upVotesBy.includes('me') ? 1 :
-                            thread.downVotesBy.includes('me') ? -1 : 0;
 
   return (
-  <div className="thread-detail">
-    <h2>{thread.title}</h2>
-    <p className="thread-owner">By: {thread.owner.name}</p>
-    <p>{thread.body}</p>
+    <div className="thread-detail">
 
-    {/* Voting */}
-    {token && (
-      <div className="vote-container">
-        <VoteButton currentVote={currentThreadVote} onVote={handleThreadVote} />
+      {/* ===== TITLE ===== */}
+      <h2 className="thread-detail-title">
+        <i className="fas fa-file-alt"></i>
+        {threadDetail.title}
+      </h2>
+
+      {/* ===== AUTHOR ===== */}
+      <p className="thread-detail-author">
+        <i className="fas fa-user-circle"></i>
+        {threadDetail.owner?.name || 'Anonymous'}
+      </p>
+
+      {/* ===== BODY ===== */}
+      <div
+        className="thread-detail-body"
+        dangerouslySetInnerHTML={{ __html: threadDetail.body }}
+      />
+
+      {/* ===== VOTE ===== */}
+      <div className="vote-section">
+        <button
+          className={`vote-btn up ${isUpVoted ? 'active' : ''}`}
+          onClick={() => handleVote('up-vote')}
+          disabled={!token}
+        >
+          <i className="fas fa-thumbs-up"></i>
+          <span>{threadDetail.upVotesBy?.length || 0}</span>
+        </button>
+
+        <button
+          className={`vote-btn down ${isDownVoted ? 'active' : ''}`}
+          onClick={() => handleVote('down-vote')}
+          disabled={!token}
+        >
+          <i className="fas fa-thumbs-down"></i>
+          <span>{threadDetail.downVotesBy?.length || 0}</span>
+        </button>
+
+        {!token && (
+          <span className="login-hint">
+            <i className="fas fa-lock"></i>
+            Login dulu buat vote
+          </span>
+        )}
       </div>
-    )}
 
-    <p>Comments ({thread.comments.length})</p>
-    <ul>
-      {comments.map(c => {
-        const currentCommentVote = c.upVotesBy?.includes('me') ? 1 :
-                                   c.downVotesBy?.includes('me') ? -1 : 0;
-        return (
-          <li key={c.id}>
-            <span>
-              <strong>{c.owner.name}:</strong> {c.content}
-            </span>
-            {token && (
-              <VoteButton
-                currentVote={currentCommentVote}
-                onVote={(vote) => handleCommentVote(c.id, vote)}
-              />
-            )}
+      {/* ===== COMMENTS ===== */}
+      <h4 className="comment-title">
+        <i className="fas fa-comments"></i>
+        Comments ({comments.length})
+      </h4>
+
+      <ul className="comment-list">
+        {comments.map((c) => (
+          <li key={c.id} className="comment-item">
+            <div className="comment-header">
+              <i className="fas fa-user"></i>
+              <strong>{c.owner?.name || 'Anonymous'}</strong>
+            </div>
+            <p>{c.content}</p>
           </li>
-        );
-      })}
-    </ul>
+        ))}
+      </ul>
 
-    {/* Add Comment */}
-    {token && (
-      <form onSubmit={handleAddComment}>
-        <input
-          type="text"
-          placeholder="Write a comment"
-          value={newComment}
-          onChange={e => setNewComment(e.target.value)}
-          required
-        />
-        <button type="submit">Add Comment</button>
-      </form>
-    )}
-  </div>
-);
+      {/* ===== COMMENT FORM ===== */}
+      {token ? (
+        <form className="comment-form" onSubmit={handleAddComment}>
+          <i className="fas fa-pen"></i>
+          <input
+            name="comment"
+            placeholder="Tulis komentar..."
+            autoComplete="off"
+            required
+          />
+          <button type="submit">
+            <i className="fas fa-paper-plane"></i>
+          </button>
+        </form>
+      ) : (
+        <p className="login-hint">
+          <i className="fas fa-lock"></i>
+          Login dulu buat nambah komentar
+        </p>
+      )}
+    </div>
+  );
 }

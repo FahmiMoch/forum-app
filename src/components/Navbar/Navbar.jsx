@@ -1,56 +1,86 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { logout } from '../../features/auth/authSlice';
-import LoginPage from '../../pages/LoginPage';
 import '../../styles/styles.css';
 
 export default function Navbar() {
-  const token = useSelector(state => state.auth.token);
-  const user = useSelector(state => state.auth.user);
+  const { token, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const [showLogin, setShowLogin] = useState(false);
+  const navigate = useNavigate();
+
+  // 🌗 THEME
+  const [theme, setTheme] = useState(
+    localStorage.getItem('theme') || 'light'
+  );
+
+  useEffect(() => {
+    document.body.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+  };
 
   const handleLogout = () => {
     dispatch(logout());
+    navigate('/login');
   };
 
   return (
-    <>
-      <nav className="navbar">
-        <div className="navbar-logo" onClick={() => window.location.href = '/'}>
-          ForumLogo
-        </div>
+    <nav className="navbar">
 
-        <div className="navbar-action">
-          {token ? (
-            <img
-              src={user.avatar || 'https://via.placeholder.com/30'}
-              alt={user.name}
-              className="navbar-avatar"
-              onClick={handleLogout}
-            />
-          ) : (
-            <img
-              src="https://cdn-icons-png.flaticon.com/512/709/709579.png"
-              alt="Login"
-              className="navbar-login-icon"
-              onClick={() => setShowLogin(true)}
-            />
-          )}
-        </div>
-      </nav>
+      {/* 🔥 LOGO */}
+      <div
+        className="navbar-logo"
+        onClick={() => navigate('/')}
+      >
+        <i className="fas fa-comments"></i>
+        <span>ForumApp</span>
+      </div>
 
-      {/* Login Modal */}
-      {showLogin && (
-        <div className="modal-backdrop">
-          <div className="modal-content">
-            <button className="modal-close" onClick={() => setShowLogin(false)}>
-              X
-            </button>
-            <LoginPage onLoginSuccess={() => setShowLogin(false)} />
-          </div>
-        </div>
-      )}
-    </>
+      {/* ACTION */}
+      <div className="navbar-action">
+
+        {/* ✍️ CREATE THREAD */}
+        {token && (
+          <button
+            className="create-thread-btn"
+            onClick={() => navigate('/threads/create')}
+            title="Create Thread"
+          >
+            <i className="fas fa-plus"></i>
+            <span>Thread</span>
+          </button>
+        )}
+
+        {/* 🌗 THEME */}
+        <button className="theme-toggle" onClick={toggleTheme}>
+          <i
+            className={`fas ${
+              theme === 'light' ? 'fa-moon' : 'fa-sun'
+            }`}
+          ></i>
+        </button>
+
+        {/* AUTH */}
+        {token ? (
+          <img
+            src={user?.avatar || 'https://via.placeholder.com/30'}
+            alt={user?.name}
+            className="navbar-avatar"
+            onClick={handleLogout}
+            title="Logout"
+          />
+        ) : (
+          <i
+            className="fas fa-sign-in-alt navbar-login-icon"
+            onClick={() => navigate('/login')}
+            title="Login"
+          ></i>
+        )}
+      </div>
+    </nav>
   );
 }

@@ -1,8 +1,6 @@
-import axios from 'axios';
-
-const BASE_URL = 'https://forum-api.dicoding.dev/v1';
+import apiClient from './apiClient';
 
 export async function getLeaderboards() {
-  const response = await axios.get(`${BASE_URL}/leaderboards`);
+  const response = await apiClient.get('/leaderboards');
   return response.data.data;
 }
