@@ -22,6 +22,11 @@ export const createThread = async ({ title, body, category }) => {
   return response.data.data.thread;
 };
 
+export const deleteThread = async (threadId) => {
+  const response = await apiClient.delete(`/threads/${threadId}`);
+  return response.data;
+};
+
 // Vote thread
 export const voteThread = async (threadId, voteType) => {
   const urlMap = {

@@ -1,49 +1,44 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { fetchThreads } from '../features/threads/threadsSlice';
 import { fetchUsers } from '../features/users/usersSlice';
-import { Link } from 'react-router-dom';
 import LeaderboardPage from './LeaderboardPage';
+import ThreadsLoading from '../components/Loading/ThreadPageLoading';
+import ThreadError from '../components/Error/ThreadError'
 
 export default function ThreadsPage() {
   const dispatch = useDispatch();
 
-  // ===== REDUX STATE =====
-  const threads = useSelector(state => state.threads?.threads || []);
-  const users = useSelector(state => state.users?.users || []);
-  const authUser = useSelector(state => state.auth.user);
+  const threads = useSelector((state) => state.threads.threads);
+  const users = useSelector((state) => state.users.users);
 
-  const loading = useSelector(state => state.threads?.loading);
-  const error = useSelector(state => state.threads?.error);
+  const loading = useSelector((state) => state.threads.loadingThreads);
+  const error = useSelector((state) => state.threads.error);
 
   const [categoryFilter, setCategoryFilter] = useState('All');
 
-  // ===== FETCH DATA =====
   useEffect(() => {
     dispatch(fetchThreads());
     dispatch(fetchUsers());
   }, [dispatch]);
 
-  // ===== MAP USERS BY ID =====
   const usersById = useMemo(() => {
     const map = {};
-    users.forEach(user => {
-      map[user.id] = user;
-    });
+    users.forEach((u) => (map[u.id] = u));
     return map;
   }, [users]);
 
-  // ===== CATEGORY =====
-  const categories = ['All', ...new Set(
-    threads.map(t => t.category || 'General')
-  )];
+  const categories = useMemo(
+    () => ['All', ...new Set(threads.map((t) => t.category || 'General'))],
+    [threads]
+  );
 
   const filteredThreads =
     categoryFilter === 'All'
       ? threads
-      : threads.filter(t => t.category === categoryFilter);
+      : threads.filter((t) => t.category === categoryFilter);
 
-  // ===== FORMAT TIME =====
   const formatTime = (date) =>
     new Date(date).toLocaleDateString('id-ID', {
       day: 'numeric',
@@ -51,35 +46,37 @@ export default function ThreadsPage() {
       year: 'numeric',
     });
 
-  if (loading) return <p>Loading threads...</p>;
-  if (error) return <p>{error}</p>;
+  /* =============================
+     🔥 LOADING & ERROR HANDLER
+     ============================= */
+  if (loading) {
+    return <ThreadsLoading />;
+  }
 
+  if (error) {
+    return <ThreadError />;
+  }
+
+  /* =============================
+     🔥 MAIN RENDER
+     ============================= */
   return (
     <div className="forum-layout">
-
       {/* LEFT */}
+      <h3 className="section-title left">Leaderboards</h3>
       <aside className="forum-left">
-        <LeaderboardPage limit={5} />
+        <LeaderboardPage />
       </aside>
 
       {/* CENTER */}
+      <h3 className="section-title center">Forum Threads</h3>
       <main className="forum-center">
-        <h2>Forum Threads</h2>
-
         <ul className="thread-list">
-          {filteredThreads.map(thread => {
+          {filteredThreads.map((thread) => {
             const user = usersById[thread.ownerId];
-
-            const isUpVoted =
-              authUser && thread.upVotesBy?.includes(authUser.id);
-
-            const isDownVoted =
-              authUser && thread.downVotesBy?.includes(authUser.id);
 
             return (
               <li key={thread.id} className="thread-card">
-
-                {/* HEADER */}
                 <div className="thread-header">
                   <img
                     src={
@@ -91,60 +88,31 @@ export default function ThreadsPage() {
                   />
 
                   <div className="thread-info">
-                    <div className="thread-author">
-                      Dibuat oleh{' '}
-                      <strong>{user?.name || 'Anonymous'}</strong>
-                    </div>
-
+                    <strong>{user?.name || 'Anonymous'}</strong>
                     <div className="thread-time">
                       {formatTime(thread.createdAt)}
                     </div>
                   </div>
                 </div>
 
-                {/* TITLE */}
-                <Link to={`/threads/${thread.id}`} className="thread-title">
+                <Link
+                  to={`/threads/${thread.id}`}
+                  className="thread-title"
+                >
                   {thread.title}
                 </Link>
 
-                {/* BODY */}
                 <p className="thread-body">
-                  {thread.body
+                  {(thread.body || '')
                     .replace(/<[^>]*>?/gm, '')
-                    .slice(0, 120)}...
+                    .slice(0, 120)}
+                  ...
                 </p>
 
-                {/* META */}
-             {/* META */}
-<div className="thread-meta">
-  <span>
-    <i className="fas fa-tag"></i> {thread.category}
-  </span>
-  <span>
-    <i className="fas fa-comments"></i> {thread.totalComments}
-  </span>
-</div>
-
-{/* VOTES */}
-<div className="thread-votes">
-  <button
-    className={`vote-btn up ${isUpVoted ? 'active' : ''}`}
-    disabled={!authUser}
-  >
-    <i className="fas fa-thumbs-up"></i>
-    <span>{thread.upVotesBy?.length || 0}</span>
-  </button>
-
-  <button
-    className={`vote-btn down ${isDownVoted ? 'active' : ''}`}
-    disabled={!authUser}
-  >
-    <i className="fas fa-thumbs-down"></i>
-    <span>{thread.downVotesBy?.length || 0}</span>
-  </button>
-</div>
-
-
+                <div className="thread-meta">
+                  <span>#{thread.category || 'General'}</span>
+                  <span>{thread.totalComments || 0} komentar</span>
+                </div>
               </li>
             );
           })}
@@ -152,25 +120,20 @@ export default function ThreadsPage() {
       </main>
 
       {/* RIGHT */}
+      <h3 className="section-title right">Category</h3>
       <aside className="forum-right">
-        <h4>
-  <i className="fas fa-filter"></i> Categories
-</h4>
-
-<ul>
-  {categories.map(cat => (
-    <li
-      key={cat}
-      className={categoryFilter === cat ? 'active' : ''}
-      onClick={() => setCategoryFilter(cat)}
-    >
-      <i className="fas fa-hashtag"></i> {cat}
-    </li>
-  ))}
-</ul>
-
+        <ul className="category-list">
+          {categories.map((cat) => (
+            <li
+              key={cat}
+              className={categoryFilter === cat ? 'active' : ''}
+              onClick={() => setCategoryFilter(cat)}
+            >
+              #{cat}
+            </li>
+          ))}
+        </ul>
       </aside>
-
     </div>
   );
 }

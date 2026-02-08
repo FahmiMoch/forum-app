@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getLeaderboards } from '../api/leaderboardApi';
 import { Link } from 'react-router-dom';
+import ThreadsLoading from '../components/Loading/ThreadPageLoading';
 
 export default function LeaderboardPage({ limit }) {
   const [leaderboards, setLeaderboards] = useState([]);
@@ -22,14 +23,15 @@ export default function LeaderboardPage({ limit }) {
     fetchLeaderboard();
   }, []);
 
-  if (loading) return <p className="loading">Loading...</p>;
+   if (loading) {
+      return <ThreadsLoading />;
+    }
   if (error) return <p className="error">{error}</p>;
 
   const displayed = limit ? leaderboards.slice(0, limit) : leaderboards;
 
   return (
     <div className={`leaderboard-container ${limit ? 'compact' : ''}`}>
-      <h2 className="leaderboard-title">Leaderboard</h2>
 
       <ul className="leaderboard-list">
         {displayed.map((item, index) => (

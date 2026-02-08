@@ -1,32 +1,30 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login, fetchMe } from '../features/auth/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/styles.css';
 
-export default function LoginPage({ onLoginSuccess }) {
+export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // 🔥 ambil halaman asal (kalau ada)
+  const from = location.state?.from?.pathname || '/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // 1️⃣ login → token
       await dispatch(login({ email, password })).unwrap();
-
-      // 2️⃣ ambil user
       await dispatch(fetchMe()).unwrap();
 
-      // 3️⃣ close modal (kalau ada)
-      if (onLoginSuccess) onLoginSuccess();
-
-      // 4️⃣ redirect ke threads
-      navigate('/threads');
+      // ✅ balik ke halaman sebelumnya
+      navigate(from, { replace: true });
     } catch (err) {
-      alert('Login failed: ' + err);
+      alert('Login gagal');
     }
   };
 
@@ -40,7 +38,7 @@ export default function LoginPage({ onLoginSuccess }) {
           type="email"
           placeholder="Email"
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
 
@@ -49,7 +47,7 @@ export default function LoginPage({ onLoginSuccess }) {
           type="password"
           placeholder="Password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           required
         />
 

@@ -5,7 +5,7 @@ import { logout } from '../../features/auth/authSlice';
 import '../../styles/styles.css';
 
 export default function Navbar() {
-  const { token, user } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -23,15 +23,28 @@ export default function Navbar() {
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate('/login');
+  // ➕ CREATE THREAD
+  const handleCreateThread = () => {
+    if (!token) {
+      navigate('/login');
+    } else {
+      navigate('/threads/create');
+    }
+  };
+
+  // 👤 USER ICON
+  const handleUserClick = () => {
+    if (!token) {
+      navigate('/login');
+    } else {
+      dispatch(logout());
+      navigate('/');
+    }
   };
 
   return (
     <nav className="navbar">
-
-      {/* 🔥 LOGO */}
+      {/* LOGO */}
       <div
         className="navbar-logo"
         onClick={() => navigate('/')}
@@ -42,44 +55,32 @@ export default function Navbar() {
 
       {/* ACTION */}
       <div className="navbar-action">
-
-        {/* ✍️ CREATE THREAD */}
-        {token && (
-          <button
-            className="create-thread-btn"
-            onClick={() => navigate('/threads/create')}
-            title="Create Thread"
-          >
-            <i className="fas fa-plus"></i>
-            <span>Thread</span>
-          </button>
-        )}
-
-        {/* 🌗 THEME */}
-        <button className="theme-toggle" onClick={toggleTheme}>
-          <i
-            className={`fas ${
-              theme === 'light' ? 'fa-moon' : 'fa-sun'
-            }`}
-          ></i>
+        {/* ➕ CREATE THREAD */}
+        <button
+          className="icon-btn"
+          onClick={handleCreateThread}
+          title={token ? 'Create Thread' : 'Login untuk membuat thread'}
+        >
+          <i className="fas fa-plus"></i>
         </button>
 
-        {/* AUTH */}
-        {token ? (
-          <img
-            src={user?.avatar || 'https://via.placeholder.com/30'}
-            alt={user?.name}
-            className="navbar-avatar"
-            onClick={handleLogout}
-            title="Logout"
-          />
-        ) : (
-          <i
-            className="fas fa-sign-in-alt navbar-login-icon"
-            onClick={() => navigate('/login')}
-            title="Login"
-          ></i>
-        )}
+        {/* 🌗 THEME */}
+        <button
+          className="icon-btn"
+          onClick={toggleTheme}
+          title="Toggle theme"
+        >
+          <i className={`fas ${theme === 'light' ? 'fa-moon' : 'fa-sun'}`} />
+        </button>
+
+        {/* 👤 USER */}
+        <button
+          className="icon-btn"
+          onClick={handleUserClick}
+          title={token ? 'Logout' : 'Login'}
+        >
+          <i className="fas fa-user-circle"></i>
+        </button>
       </div>
     </nav>
   );

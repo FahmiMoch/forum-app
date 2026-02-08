@@ -34,15 +34,53 @@ export default function CreateThreadPage() {
   };
 
   return (
-    <div className="create-thread-page">
-      <h2><i className="fas fa-pen"></i> Create New Thread</h2>
+   <div className="create-thread-page">
 
-      <form onSubmit={handleSubmit} className="create-thread-form">
-        <input value={title} onChange={e => setTitle(e.target.value)} placeholder="Title" />
-        <input value={category} onChange={e => setCategory(e.target.value)} placeholder="Category" />
-        <textarea value={body} onChange={e => setBody(e.target.value)} placeholder="Content" />
-        <button disabled={loading}>Post Thread</button>
-      </form>
-    </div>
+  <div className="create-thread-card">
+    <h2 className="create-thread-title">
+      <i className="fas fa-pen"></i>
+      <span>Create New Thread</span>
+    </h2>
+
+    <form onSubmit={handleSubmit} className="create-thread-form">
+
+      <div className="form-group">
+        <label>Title</label>
+        <input
+          value={title}
+          onChange={e => setTitle(e.target.value)}
+          placeholder="Judul thread yang jelas dan singkat"
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Category</label>
+        <input
+          value={category}
+          onChange={e => setCategory(e.target.value)}
+          placeholder="misal: react, redux, css (opsional)"
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Content</label>
+        <textarea
+          value={body}
+          onChange={e => setBody(e.target.value)}
+          placeholder="Tulis isi thread di sini..."
+          rows={6}
+        />
+      </div>
+
+      <div className="form-action">
+        <button disabled={loading}>
+          {loading ? 'Posting...' : 'Post Thread'}
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
   );
 }

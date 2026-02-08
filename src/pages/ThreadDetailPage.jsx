@@ -1,18 +1,37 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import {
+  useParams,
+  useNavigate,
+  useLocation,
+} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
 import {
   fetchThreadDetail,
   voteOnThread,
   clearThreadDetail,
+  deleteThreadAsync,
 } from '../features/threads/threadsSlice';
+
 import { addComment } from '../features/comments/commentsSlice';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faChevronUp,
+  faChevronDown,
+  faPaperPlane,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function ThreadDetailPage() {
   const { threadId } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
-  const { threadDetail, loading } = useSelector((state) => state.threads);
+  const { threadDetail, loadingDetail } = useSelector(
+    (state) => state.threads
+  );
   const authUser = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
 
@@ -21,140 +40,184 @@ export default function ThreadDetailPage() {
     return () => dispatch(clearThreadDetail());
   }, [dispatch, threadId]);
 
-  if (loading || !threadDetail) {
-    return <p className="loading-text">Loading thread...</p>;
+  if (loadingDetail || !threadDetail) {
+    return <p>Loading thread...</p>;
   }
 
-  const comments = threadDetail.comments || [];
+  const userId = authUser?.id;
 
-  const isUpVoted =
-    authUser && threadDetail.upVotesBy?.includes(authUser.id);
+  const isOwner = userId === threadDetail.owner?.id;
+  const isUpVoted = userId
+    ? threadDetail.upVotesBy.includes(userId)
+    : false;
+  const isDownVoted = userId
+    ? threadDetail.downVotesBy.includes(userId)
+    : false;
 
-  const isDownVoted =
-    authUser && threadDetail.downVotesBy?.includes(authUser.id);
+  const upVoteCount = threadDetail.upVotesBy.length;
+  const downVoteCount = threadDetail.downVotesBy.length;
 
-  const handleVote = (type) => {
+  // 🔐 WAJIB LOGIN
+  const requireLogin = () => {
+    alert('Login dulu ya 🙂');
+    navigate('/login', {
+      replace: true,
+      state: { from: location },
+    });
+  };
+
+  const handleVote = (voteType) => {
     if (!token) {
-      alert('Login dulu buat vote');
+      requireLogin();
       return;
     }
-
-    dispatch(
-      voteOnThread({
-        threadId,
-        voteType: type,
-      })
-    );
+    dispatch(voteOnThread({ threadId, voteType }));
   };
 
   const handleAddComment = (e) => {
     e.preventDefault();
 
     if (!token) {
-      alert('Login dulu buat komentar');
+      requireLogin();
       return;
     }
-
-    const content = e.target.comment.value.trim();
-    if (!content) return;
 
     dispatch(
       addComment({
         threadId,
-        content,
+        content: e.target.comment.value,
       })
     );
 
     e.target.reset();
   };
 
+  const handleDeleteThread = async () => {
+    if (!window.confirm('Hapus thread ini?')) return;
+    await dispatch(deleteThreadAsync(threadId));
+    navigate('/');
+  };
+
+  const renderAvatar = (user) => {
+    if (user?.avatar) {
+      return (
+        <img
+          src={user.avatar}
+          alt={user.name}
+          className="avatar-img"
+        />
+      );
+    }
+    return (
+      <div className="avatar-fallback">
+        {user?.name?.charAt(0).toUpperCase()}
+      </div>
+    );
+  };
+
   return (
     <div className="thread-detail">
+      {/* HEADER */}
+      <div className="thread-header-detail">
+        <div className="thread-main">
+          <div className="thread-owner">
+            <div className="avatar">
+              {renderAvatar(threadDetail.owner)}
+            </div>
 
-      {/* ===== TITLE ===== */}
-      <h2 className="thread-detail-title">
-        <i className="fas fa-file-alt"></i>
-        {threadDetail.title}
-      </h2>
+            <div>
+              <h2>{threadDetail.title}</h2>
+              <p className="thread-author">
+                by <strong>{threadDetail.owner?.name}</strong>
+              </p>
+            </div>
+          </div>
 
-      {/* ===== AUTHOR ===== */}
-      <p className="thread-detail-author">
-        <i className="fas fa-user-circle"></i>
-        {threadDetail.owner?.name || 'Anonymous'}
-      </p>
+          {isOwner && (
+            <button
+              className="btn-delete"
+              onClick={handleDeleteThread}
+            >
+              <FontAwesomeIcon icon={faTrash} /> Hapus
+            </button>
+          )}
+        </div>
+      </div>
 
-      {/* ===== BODY ===== */}
+      {/* BODY */}
       <div
-        className="thread-detail-body"
+        className="thread-body"
         dangerouslySetInnerHTML={{ __html: threadDetail.body }}
       />
 
-      {/* ===== VOTE ===== */}
-      <div className="vote-section">
-        <button
-          className={`vote-btn up ${isUpVoted ? 'active' : ''}`}
-          onClick={() => handleVote('up-vote')}
-          disabled={!token}
-        >
-          <i className="fas fa-thumbs-up"></i>
-          <span>{threadDetail.upVotesBy?.length || 0}</span>
-        </button>
+      {/* VOTE SECTION */}
+      <div className="thread-vote-section">
+        {/* VOTE UP */}
+        <div className="vote-box up">
+          <span className="vote-label">Vote Up</span>
+          <button
+            className={`vote-btn up ${isUpVoted ? 'active' : ''}`}
+            onClick={() => handleVote(isUpVoted ? 0 : 1)}
+          >
+            <FontAwesomeIcon icon={faChevronUp} />
+            <span className="vote-score">{upVoteCount}</span>
+          </button>
+        </div>
 
-        <button
-          className={`vote-btn down ${isDownVoted ? 'active' : ''}`}
-          onClick={() => handleVote('down-vote')}
-          disabled={!token}
-        >
-          <i className="fas fa-thumbs-down"></i>
-          <span>{threadDetail.downVotesBy?.length || 0}</span>
-        </button>
-
-        {!token && (
-          <span className="login-hint">
-            <i className="fas fa-lock"></i>
-            Login dulu buat vote
-          </span>
-        )}
+        {/* VOTE DOWN */}
+        <div className="vote-box down">
+          <span className="vote-label">Vote Down</span>
+          <button
+            className={`vote-btn down ${isDownVoted ? 'active' : ''}`}
+            onClick={() => handleVote(isDownVoted ? 0 : -1)}
+          >
+            <FontAwesomeIcon icon={faChevronDown} />
+            <span className="vote-score">{downVoteCount}</span>
+          </button>
+        </div>
       </div>
 
-      {/* ===== COMMENTS ===== */}
-      <h4 className="comment-title">
-        <i className="fas fa-comments"></i>
-        Comments ({comments.length})
-      </h4>
+      {/* COMMENTS */}
+      <h4>Komentar</h4>
 
       <ul className="comment-list">
-        {comments.map((c) => (
+        {threadDetail.comments.map((c) => (
           <li key={c.id} className="comment-item">
-            <div className="comment-header">
-              <i className="fas fa-user"></i>
-              <strong>{c.owner?.name || 'Anonymous'}</strong>
+            <div className="avatar">
+              {renderAvatar(c.owner)}
             </div>
-            <p>{c.content}</p>
+
+            <div className="comment-content">
+              <strong>{c.owner?.name}</strong>
+              <p>{c.content}</p>
+            </div>
           </li>
         ))}
       </ul>
 
-      {/* ===== COMMENT FORM ===== */}
-      {token ? (
-        <form className="comment-form" onSubmit={handleAddComment}>
-          <i className="fas fa-pen"></i>
-          <input
-            name="comment"
-            placeholder="Tulis komentar..."
-            autoComplete="off"
-            required
-          />
-          <button type="submit">
-            <i className="fas fa-paper-plane"></i>
-          </button>
-        </form>
-      ) : (
-        <p className="login-hint">
-          <i className="fas fa-lock"></i>
-          Login dulu buat nambah komentar
-        </p>
-      )}
+      {/* COMMENT FORM */}
+      <form
+        className="comment-form"
+        onSubmit={handleAddComment}
+      >
+        <input
+          name="comment"
+          placeholder={
+            token
+              ? 'Tulis komentar...'
+              : 'Login dulu untuk komentar'
+          }
+          disabled={!token}
+          required
+        />
+        <button
+          className="send-btn"
+          type="submit"
+          disabled={!token}
+        >
+          <FontAwesomeIcon icon={faPaperPlane} />
+        </button>
+      </form>
     </div>
   );
 }

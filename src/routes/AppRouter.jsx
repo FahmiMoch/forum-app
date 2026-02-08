@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -7,9 +6,11 @@ import {
 } from 'react-router-dom';
 
 import Navbar from '../components/Navbar/Navbar';
+import FooterPage from '../pages/FooterPage';
+
 import ThreadsPage from '../pages/ThreadsPage';
 import ThreadDetailPage from '../pages/ThreadDetailPage';
-import CreateThreadPage from '../pages/CreateThreadPage'; // 🔥 TAMBAH
+import CreateThreadPage from '../pages/CreateThreadPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import LeaderboardPage from '../pages/LeaderboardPage';
@@ -18,33 +19,21 @@ import ProtectedRoute from './ProtectedRoute';
 export default function AppRoutes() {
   return (
     <Router>
+      {/* ===== NAVBAR (SELALU TAMPIL) ===== */}
       <Navbar />
 
+      {/* ===== CONTENT ===== */}
       <Routes>
-        {/* ================= PUBLIC ================= */}
+        {/* ===== PUBLIC ===== */}
+        <Route path="/" element={<ThreadsPage />} />
+        <Route path="/threads/:threadId" element={<ThreadDetailPage />} />
+        <Route path="/leaderboard" element={<LeaderboardPage />} />
+
+        {/* ===== AUTH ===== */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
-        {/* ================= PROTECTED ================= */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <ThreadsPage />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/threads"
-          element={
-            <ProtectedRoute>
-              <ThreadsPage />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* 🔥 CREATE THREAD (HARUS DI ATAS) */}
+        {/* ===== LOGIN ONLY ===== */}
         <Route
           path="/threads/create"
           element={
@@ -54,28 +43,12 @@ export default function AppRoutes() {
           }
         />
 
-        {/* DETAIL THREAD */}
-        <Route
-          path="/threads/:threadId"
-          element={
-            <ProtectedRoute>
-              <ThreadDetailPage />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/leaderboard"
-          element={
-            <ProtectedRoute>
-              <LeaderboardPage />
-            </ProtectedRoute>
-          }
-        />
-
-        {/* ================= FALLBACK ================= */}
+        {/* ===== FALLBACK ===== */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+
+      {/* ===== FOOTER (SELALU TAMPIL) ===== */}
+      <FooterPage />
     </Router>
   );
 }
