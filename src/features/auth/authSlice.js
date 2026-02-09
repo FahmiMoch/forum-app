@@ -1,58 +1,52 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { loginUser, registerUser, getProfile } from '../../api/authApi';
-
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { loginUser, registerUser, getProfile } from "../../api/authApi";
 
 export const login = createAsyncThunk(
-  'auth/login',
+  "auth/login",
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await loginUser({ email, password });
       return response.data; // { token }
     } catch (err) {
-      return rejectWithValue(
-        err.response?.data?.message || 'Login failed'
-      );
+      return rejectWithValue(err.response?.data?.message || "Login failed");
     }
-  }
+  },
 );
 
 export const register = createAsyncThunk(
-  'auth/register',
+  "auth/register",
   async ({ name, email, password }, { rejectWithValue }) => {
     try {
       const response = await registerUser({ name, email, password });
       return response.data;
     } catch (err) {
-      return rejectWithValue(
-        err.response?.data?.message || 'Register failed'
-      );
+      return rejectWithValue(err.response?.data?.message || "Register failed");
     }
-  }
+  },
 );
 
-
 export const fetchMe = createAsyncThunk(
-  'auth/fetchMe',
+  "auth/fetchMe",
   async (_, { rejectWithValue }) => {
     try {
       const response = await getProfile();
       return response.data.user;
     } catch (err) {
       return rejectWithValue(
-        err.response?.data?.message || 'Fetch profile failed'
+        err.response?.data?.message || "Fetch profile failed",
       );
     }
-  }
+  },
 );
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
 
   initialState: {
     user: null,
-    token: localStorage.getItem('token'),
-    loading: false,        // login/register loading
-    isAuthLoading: true,   // ⬅️ auth bootstrap
+    token: localStorage.getItem("token"),
+    loading: false, // login/register loading
+    isAuthLoading: true, // ⬅️ auth bootstrap
     error: null,
   },
 
@@ -61,7 +55,7 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.isAuthLoading = false; // ✅ FIX
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
     },
 
     finishAuthLoading: (state) => {
@@ -80,7 +74,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.token = action.payload.token;
         state.isAuthLoading = false; // ✅ FIX PENTING
-        localStorage.setItem('token', state.token);
+        localStorage.setItem("token", state.token);
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
@@ -112,7 +106,7 @@ const authSlice = createSlice({
       .addCase(fetchMe.rejected, (state) => {
         state.user = null;
         state.token = null;
-        localStorage.removeItem('token');
+        localStorage.removeItem("token");
         state.isAuthLoading = false;
       });
   },

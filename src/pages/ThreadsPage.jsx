@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { fetchThreads } from '../features/threads/threadsSlice';
-import { fetchUsers } from '../features/users/usersSlice';
+import { fetchThreads } from "../features/threads/threadsSlice";
+import { fetchUsers } from "../features/users/usersSlice";
 
-import LeaderboardPage from './LeaderboardPage';
-import ThreadList from '../components/ThreadList';
-import CategoryList from '../components/CategoryList';
+import LeaderboardPage from "./LeaderboardPage";
+import ThreadList from "../components/ThreadList";
+import CategoryList from "../components/CategoryList";
 
 export default function ThreadsPage() {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ export default function ThreadsPage() {
     error: usersError,
   } = useSelector((state) => state.users);
 
-  const [categoryFilter, setCategoryFilter] = useState('All');
+  const [categoryFilter, setCategoryFilter] = useState("All");
 
   /* ===== FETCH ===== */
   useEffect(() => {
@@ -43,17 +43,14 @@ export default function ThreadsPage() {
 
   /* ===== CATEGORIES ===== */
   const categories = useMemo(() => {
-    if (!Array.isArray(threads)) return ['All'];
-    return [
-      'All',
-      ...new Set(threads.map((t) => t.category || 'General')),
-    ];
+    if (!Array.isArray(threads)) return ["All"];
+    return ["All", ...new Set(threads.map((t) => t.category || "General"))];
   }, [threads]);
 
   /* ===== FILTER THREADS ===== */
   const filteredThreads = useMemo(() => {
     if (!Array.isArray(threads)) return [];
-    if (categoryFilter === 'All') return threads;
+    if (categoryFilter === "All") return threads;
     return threads.filter((t) => t.category === categoryFilter);
   }, [threads, categoryFilter]);
 

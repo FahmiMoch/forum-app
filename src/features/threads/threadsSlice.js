@@ -1,11 +1,11 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getAllThreads,
   getThreadById,
   createThread,
   voteThread,
   deleteThread,
-} from '../../api/threadsApi';
+} from "../../api/threadsApi";
 
 /* =====================
    ASYNC THUNKS
@@ -13,75 +13,75 @@ import {
 
 // ✅ GET ALL THREADS
 export const fetchThreads = createAsyncThunk(
-  'threads/fetchThreads',
+  "threads/fetchThreads",
   async (_, { rejectWithValue }) => {
     try {
       const threads = await getAllThreads(); // ⬅️ ARRAY LANGSUNG
       return threads;
     } catch (error) {
-      console.error('fetchThreads error:', error);
-      return rejectWithValue('Failed to fetch threads');
+      console.error("fetchThreads error:", error);
+      return rejectWithValue("Failed to fetch threads");
     }
-  }
+  },
 );
 
 // ✅ GET THREAD DETAIL
 export const fetchThreadDetail = createAsyncThunk(
-  'threads/fetchThreadDetail',
+  "threads/fetchThreadDetail",
   async (threadId, { rejectWithValue }) => {
     try {
       const detailThread = await getThreadById(threadId);
       return detailThread;
     } catch (error) {
-      console.error('fetchThreadDetail error:', error);
-      return rejectWithValue('Failed to fetch thread detail');
+      console.error("fetchThreadDetail error:", error);
+      return rejectWithValue("Failed to fetch thread detail");
     }
-  }
+  },
 );
 
 // ✅ CREATE THREAD
 export const addThread = createAsyncThunk(
-  'threads/addThread',
+  "threads/addThread",
   async ({ title, body, category }, { rejectWithValue }) => {
     try {
       const thread = await createThread({ title, body, category });
       return thread;
     } catch (error) {
-      console.error('addThread error:', error);
-      return rejectWithValue('Failed to create thread');
+      console.error("addThread error:", error);
+      return rejectWithValue("Failed to create thread");
     }
-  }
+  },
 );
 
 // ✅ DELETE THREAD
 export const deleteThreadAsync = createAsyncThunk(
-  'threads/deleteThread',
+  "threads/deleteThread",
   async (threadId, { rejectWithValue }) => {
     try {
       await deleteThread(threadId);
       return threadId;
     } catch (error) {
-      console.error('deleteThread error:', error);
-      return rejectWithValue('Failed to delete thread');
+      console.error("deleteThread error:", error);
+      return rejectWithValue("Failed to delete thread");
     }
-  }
+  },
 );
 
 // ✅ VOTE THREAD
 export const voteOnThread = createAsyncThunk(
-  'threads/voteOnThread',
+  "threads/voteOnThread",
   async ({ threadId, voteType }, { getState, rejectWithValue }) => {
     const user = getState().auth.user;
-    if (!user) return rejectWithValue('Unauthorized');
+    if (!user) return rejectWithValue("Unauthorized");
 
     try {
       await voteThread(threadId, voteType);
       return { threadId, voteType, userId: user.id };
     } catch (error) {
-      console.error('voteThread error:', error);
-      return rejectWithValue('Failed to vote');
+      console.error("voteThread error:", error);
+      return rejectWithValue("Failed to vote");
     }
-  }
+  },
 );
 
 /* =====================
@@ -103,7 +103,7 @@ const applyVote = (thread, userId, voteType) => {
 ===================== */
 
 const threadsSlice = createSlice({
-  name: 'threads',
+  name: "threads",
 
   initialState: {
     threads: [],
@@ -173,9 +173,7 @@ const threadsSlice = createSlice({
 
       /* DELETE THREAD */
       .addCase(deleteThreadAsync.fulfilled, (state, action) => {
-        state.threads = state.threads.filter(
-          (t) => t.id !== action.payload
-        );
+        state.threads = state.threads.filter((t) => t.id !== action.payload);
       })
 
       /* VOTE THREAD */
@@ -185,7 +183,7 @@ const threadsSlice = createSlice({
         applyVote(
           state.threads.find((t) => t.id === threadId),
           userId,
-          voteType
+          voteType,
         );
 
         applyVote(state.threadDetail, userId, voteType);

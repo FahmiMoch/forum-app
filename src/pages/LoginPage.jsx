@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { login, fetchMe } from '../features/auth/authSlice';
-import { useNavigate, useLocation } from 'react-router-dom';
-import '../styles/styles.css';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login, fetchMe } from "../features/auth/authSlice";
+import { useNavigate, useLocation } from "react-router-dom";
+import "../styles/styles.css";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
   // 🔥 ambil halaman asal (kalau ada)
-  const from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +24,7 @@ export default function LoginPage() {
       // ✅ balik ke halaman sebelumnya
       navigate(from, { replace: true });
     } catch (err) {
-      alert('Login gagal');
+      alert("Login gagal");
     }
   };
 
@@ -56,11 +56,8 @@ export default function LoginPage() {
         </button>
 
         <p className="auth-footer">
-          Belum punya akun?{' '}
-          <span
-            className="auth-link"
-            onClick={() => navigate('/register')}
-          >
+          Belum punya akun?{" "}
+          <span className="auth-link" onClick={() => navigate("/register")}>
             Daftar
           </span>
         </p>

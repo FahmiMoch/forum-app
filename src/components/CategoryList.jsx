@@ -1,5 +1,5 @@
-import React from 'react';
-import Loading from './Loading/Loading';
+import React from "react";
+import Loading from "./Loading";
 
 export default function CategoryList({
   categories = [],
@@ -20,7 +20,7 @@ export default function CategoryList({
       {categories.map((cat) => (
         <li
           key={cat}
-          className={activeCategory === cat ? 'active' : ''}
+          className={activeCategory === cat ? "active" : ""}
           onClick={() => onSelect(cat)}
         >
           #{cat}

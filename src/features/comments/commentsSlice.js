@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { createComment, voteComment } from '../../api/commentsApi';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createComment, voteComment } from "../../api/commentsApi";
 
 /* =====================
    CONSTANTS
@@ -13,35 +13,32 @@ const VOTE_DOWN = -1;
 
 // Add comment (auth)
 export const addComment = createAsyncThunk(
-  'comments/addComment',
+  "comments/addComment",
   async ({ threadId, content }, { rejectWithValue }) => {
     try {
       const response = await createComment(threadId, content);
       return { threadId, comment: response.data.comment };
     } catch (err) {
       return rejectWithValue(
-        err.response?.data?.message || 'Failed to add comment'
+        err.response?.data?.message || "Failed to add comment",
       );
     }
-  }
+  },
 );
 
 // Vote comment (auth)
 export const voteOnComment = createAsyncThunk(
-  'comments/voteOnComment',
-  async (
-    { threadId, commentId, voteType, userId },
-    { rejectWithValue }
-  ) => {
+  "comments/voteOnComment",
+  async ({ threadId, commentId, voteType, userId }, { rejectWithValue }) => {
     try {
       await voteComment(threadId, commentId, voteType);
       return { threadId, commentId, voteType, userId };
     } catch (err) {
       return rejectWithValue(
-        err.response?.data?.message || 'Failed to vote comment'
+        err.response?.data?.message || "Failed to vote comment",
       );
     }
-  }
+  },
 );
 
 /* =====================
@@ -68,7 +65,7 @@ const applyVoteToComment = (comment, userId, voteType) => {
    SLICE
 ===================== */
 const commentsSlice = createSlice({
-  name: 'comments',
+  name: "comments",
 
   initialState: {
     commentsByThread: {},
@@ -117,15 +114,12 @@ const commentsSlice = createSlice({
       .addCase(voteOnComment.fulfilled, (state, action) => {
         state.loadingVote = false;
 
-        const { threadId, commentId, voteType, userId } =
-          action.payload;
+        const { threadId, commentId, voteType, userId } = action.payload;
 
         const comments = state.commentsByThread[threadId];
         if (!comments) return;
 
-        const comment = comments.find(
-          (c) => c.id === commentId
-        );
+        const comment = comments.find((c) => c.id === commentId);
 
         applyVoteToComment(comment, userId, voteType);
       })
@@ -136,7 +130,6 @@ const commentsSlice = createSlice({
   },
 });
 
-export const { clearCommentsByThread } =
-  commentsSlice.actions;
+export const { clearCommentsByThread } = commentsSlice.actions;
 
 export default commentsSlice.reducer;

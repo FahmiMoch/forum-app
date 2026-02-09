@@ -1,13 +1,12 @@
-import apiClient from './apiClient';
+import apiClient from "./apiClient";
 
 /**
  * Buat komentar baru
  */
 export const createComment = async (threadId, content) => {
-  const response = await apiClient.post(
-    `/threads/${threadId}/comments`,
-    { content }
-  );
+  const response = await apiClient.post(`/threads/${threadId}/comments`, {
+    content,
+  });
   return response.data.data.comment;
 };
 
@@ -16,15 +15,14 @@ export const createComment = async (threadId, content) => {
  */
 export const voteComment = async (threadId, commentId, voteType) => {
   const urlMap = {
-    1: 'up-vote',
-    0: 'neutral-vote',
-    [-1]: 'down-vote',
+    1: "up-vote",
+    0: "neutral-vote",
+    [-1]: "down-vote",
   };
 
   const response = await apiClient.post(
-    `/threads/${threadId}/comments/${commentId}/${urlMap[voteType]}`
+    `/threads/${threadId}/comments/${commentId}/${urlMap[voteType]}`,
   );
 
   return response.data.data.vote;
 };
-

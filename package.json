@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "eslint": "^8.57.1",
-    "eslint-config-dicodingacademy": "^0.9.5"
+    "eslint-config-dicodingacademy": "^0.9.5",
+    "prettier": "^3.8.1"
   }
 }

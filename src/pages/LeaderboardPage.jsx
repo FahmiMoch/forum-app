@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { getLeaderboards } from '../api/leaderboardApi';
-import Loading from '../components/Loading/Loading';
+import React, { useEffect, useState } from "react";
+import { getLeaderboards } from "../api/leaderboardApi";
+import Loading from "../components/Loading";
 
 export default function LeaderboardPage() {
   const [leaderboards, setLeaderboards] = useState([]);
@@ -11,12 +11,10 @@ export default function LeaderboardPage() {
     const fetchLeaderboard = async () => {
       try {
         const data = await getLeaderboards();
-        const sorted = data.leaderboards.sort(
-          (a, b) => b.score - a.score
-        );
+        const sorted = data.leaderboards.sort((a, b) => b.score - a.score);
         setLeaderboards(sorted);
       } catch (err) {
-        setError(err.message || 'Failed to fetch leaderboards');
+        setError(err.message || "Failed to fetch leaderboards");
       } finally {
         setLoading(false);
       }
@@ -34,19 +32,12 @@ export default function LeaderboardPage() {
         {leaderboards.map((item, index) => (
           <li
             key={item.user.id}
-            className={`leaderboard-item ${
-              index < 3 ? 'top-rank' : ''
-            }`}
+            className={`leaderboard-item ${index < 3 ? "top-rank" : ""}`}
           >
-            <span className={`rank rank-${index + 1}`}>
-              {index + 1}
-            </span>
+            <span className={`rank rank-${index + 1}`}>{index + 1}</span>
 
             <img
-              src={
-                item.user.avatar ||
-                'https://via.placeholder.com/40'
-              }
+              src={item.user.avatar || "https://via.placeholder.com/40"}
               alt={item.user.name}
               className="avatar"
             />

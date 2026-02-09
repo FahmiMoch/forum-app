@@ -1,20 +1,22 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getLeaderboards } from '../../api/leaderboardApi';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getLeaderboards } from "../../api/leaderboardApi";
 
 export const fetchLeaderboards = createAsyncThunk(
-  'leaderboard/fetchLeaderboards',
+  "leaderboard/fetchLeaderboards",
   async (_, { rejectWithValue }) => {
     try {
       const data = await getLeaderboards();
       return data;
     } catch (err) {
-      return rejectWithValue(err.response?.data || 'Failed to fetch leaderboard');
+      return rejectWithValue(
+        err.response?.data || "Failed to fetch leaderboard",
+      );
     }
-  }
+  },
 );
 
 const leaderboardSlice = createSlice({
-  name: 'leaderboard',
+  name: "leaderboard",
   initialState: {
     users: [],
     loading: false,
@@ -23,9 +25,18 @@ const leaderboardSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchLeaderboards.pending, (state) => { state.loading = true; state.error = null; })
-      .addCase(fetchLeaderboards.fulfilled, (state, action) => { state.loading = false; state.users = action.payload; })
-      .addCase(fetchLeaderboards.rejected, (state, action) => { state.loading = false; state.error = action.payload; });
+      .addCase(fetchLeaderboards.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchLeaderboards.fulfilled, (state, action) => {
+        state.loading = false;
+        state.users = action.payload;
+      })
+      .addCase(fetchLeaderboards.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

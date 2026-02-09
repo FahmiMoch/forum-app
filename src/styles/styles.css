@@ -8,9 +8,8 @@
   --vivid-sky: #00a9ff80;
   --dark: #000;
   --grey: #ddd;
-  --delete: #ff0000;
-  --delete-hover: #ff2400;
-  --archive: #ffb805;
+  --votedown: #ff0000;
+  --voteup: #ffb805;
   --gradient-bottom: linear-gradient(
     to bottom,
     var(--primary),
@@ -78,6 +77,40 @@
   --box-shadow-first: 5px 4px 3px rgba(255, 255, 255, 0.2);
 }
 
+[data-theme="dark"] body {
+  background: var(--dark);
+  color: var(--light);
+}
+
+[data-theme="dark"] .theme-toggle i {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .navbar-logo i {
+  color: var(--light);
+}
+
+[data-theme="dark"] .navbar-login-icon {
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .section-title {
+  background: var(--dark);
+}
+
+[data-theme="dark"] .forum-left,
+[data-theme="dark"] .forum-right {
+  background: var(--dark);
+}
+
+[data-theme="dark"] .forum-right li.active {
+  color: var(--dark);
+}
+
+[data-theme="dark"] .thread-card {
+  background: var(--dark);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -85,16 +118,13 @@
   max-height: 1500px;
 }
 
-html, body {
+html,
+body {
   font-family: Arial, Helvetica, sans-serif;
   background: var(--gradient-bottom);
   color: var(--light);
 }
 
-[data-theme="dark"] body {
-  background: var(--dark);
-  color: var(--light);
-}
 
 /* =========================
    NAVBAR
@@ -112,7 +142,7 @@ html, body {
   box-shadow: var(--box-shadow-first);
 }
 
-[data-theme='dark'] .navbar {
+[data-theme="dark"] .navbar {
   background: var(--dark);
   color: var(--light);
 }
@@ -154,150 +184,6 @@ html, body {
   outline-offset: 2px;
 }
 
-
-/* ===============================
-   PAGE
-================================ */
-.create-thread-page {
-  display: flex;
-  justify-content: center;
-  padding: 48px 20px;
-  animation: fadeUp 0.5s ease;
-}
-
-/* CARD */
-.create-thread-card {
-  width: 100%;
-  max-width: 720px;
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 32px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-}
-
-/* ===============================
-   TITLE
-================================ */
-.create-thread-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 22px;
-  font-weight: 700;
-  color: #1e40af;
-  margin-bottom: 28px;
-}
-
-.create-thread-title i {
-  color: #2563eb;
-}
-
-/* ===============================
-   FORM
-================================ */
-.create-thread-form {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-}
-
-/* GROUP */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.form-group label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #475569;
-}
-
-/* INPUT */
-.form-group input,
-.form-group textarea {
-  padding: 14px 16px;
-  font-size: 15px;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  background: #f9fafb;
-  outline: none;
-  transition: all 0.25s ease;
-}
-
-/* TEXTAREA */
-.form-group textarea {
-  resize: vertical;
-  min-height: 160px;
-  line-height: 1.6;
-}
-
-/* FOCUS */
-.form-group input:focus,
-.form-group textarea:focus {
-  background: #ffffff;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
-}
-
-/* ===============================
-   ACTION
-================================ */
-.form-action {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.form-action button {
-  padding: 12px 26px;
-  border-radius: 999px;
-  border: none;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  background: linear-gradient(135deg, #2563eb, #1e40af);
-  color: #ffffff;
-  transition: all 0.25s ease;
-}
-
-.form-action button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.35);
-}
-
-.form-action button:disabled {
-  background: #94a3b8;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-/* ===============================
-   DARK MODE
-================================ */
-[data-theme="dark"] .create-thread-card {
-  background: #020617;
-}
-
-[data-theme="dark"] .create-thread-title {
-  color: #93c5fd;
-}
-
-[data-theme="dark"] .form-group label {
-  color: #cbd5f5;
-}
-
-[data-theme="dark"] .form-group input,
-[data-theme="dark"] .form-group textarea {
-  background: #020617;
-  border-color: #1e293b;
-  color: #e5e7eb;
-}
-
-
-/* =========================
-   LOGO
-========================= */
 .navbar-logo {
   display: flex;
   align-items: center;
@@ -309,61 +195,15 @@ html, body {
 
 .navbar-logo i {
   font-size: 22px;
-  color: var(--light); /* indigo */
-}
-
-[data-theme='dark'] .navbar-logo i {
   color: var(--light);
 }
 
-/* =========================
-   RIGHT ACTION
-========================= */
 .navbar-action {
   display: flex;
-  align-items: center; /* 🔥 KUNCI UTAMA */
+  align-items: center;
   gap: 16px;
 }
 
-/* =========================
-   THEME BUTTON
-========================= */
-.theme-toggle {
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  border-radius: 50%; /* kunci bulat */
-
-  background: #2563eb;
-  border: none;
-  cursor: pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  transition: background 0.2s ease, transform 0.15s ease;
-}
-
-/* Hover feedback (UX) */
-.theme-toggle:hover {
-  background: rgba(0, 0, 0, 0.05);
-  transform: scale(1.05);
-}
-
-/* Keyboard accessibility */
-.theme-toggle:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(37,99,235,0.35);
-}
-
-body[data-theme='dark'] .theme-toggle i {
-  color: #e5e7eb;
-}
-
-/* =========================
-   LOGIN ICON
-========================= */
 .navbar-login-icon {
   font-size: 22px;
   cursor: pointer;
@@ -373,10 +213,6 @@ body[data-theme='dark'] .theme-toggle i {
 
 .navbar-login-icon:hover {
   transform: scale(1.15);
-}
-
-body[data-theme='dark'] .navbar-login-icon {
-  color: #e5e7eb;
 }
 
 .navbar-avatar {
@@ -393,14 +229,235 @@ body[data-theme='dark'] .navbar-login-icon {
   border-color: #6366f1;
 }
 
+.theme-toggle {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+
+  background: #2563eb;
+  border: none;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: scale(1.05);
+}
+
+.theme-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.35);
+}
+
+/* Create Thread Page */
+.create-thread-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: var(--gradient-bottom);
+}
+
+.create-thread-card {
+  width: 100%;
+  max-width: 600px;
+  background: var(--accent);
+  padding: 28px 24px 32px;
+  border-radius: 18px;
+  box-shadow: var(--box-shadow-first);
+}
+
+.create-thread-card h2 {
+  margin-bottom: 20px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--light);
+  text-align: center;
+}
+
+.create-thread-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.create-thread-card input,
+.create-thread-card textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--grey);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+  background: var(--light);
+}
+
+.create-thread-card textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.create-thread-card button {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  background: var(--gradient-right);
+  color: var(--light);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.create-thread-card button:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.create-thread-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =====================
+   OPTIONAL UX TOUCH
+===================== */
+.create-thread-card input:hover,
+.create-thread-card textarea:hover {
+  border-color: var(--pale-blue);
+}
+
+/* =========================
+   RESPONSIVE — TABLET
+========================= */
+@media (max-width: 1023px) {
+  .navbar {
+    padding: 0 16px;
+  }
+
+  .navbar-logo {
+    font-size: 18px;
+  }
+
+  .navbar-logo i {
+    font-size: 20px;
+  }
+
+  .navbar-action {
+    gap: 12px;
+  }
+
+  .create-thread-card {
+    max-width: 520px;
+    padding: 24px 20px 28px;
+  }
+
+  .create-thread-card h2 {
+    font-size: 1.4rem;
+  }
+}
+
+/* =========================
+   RESPONSIVE — MOBILE
+========================= */
+@media (max-width: 767px) {
+  /* NAVBAR */
+  .navbar {
+    height: 56px;
+    padding: 0 14px;
+  }
+
+  .navbar-logo {
+    font-size: 16px;
+    gap: 8px;
+  }
+
+  .navbar-logo i {
+    font-size: 18px;
+  }
+
+  .navbar-action {
+    gap: 10px;
+  }
+
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .navbar-avatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .theme-toggle {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* CREATE THREAD PAGE */
+  .create-thread-page {
+    padding: 16px 12px;
+  }
+
+  .create-thread-card {
+    border-radius: 16px;
+    padding: 20px 16px 24px;
+  }
+
+  .create-thread-card h2 {
+    font-size: 1.25rem;
+    margin-bottom: 16px;
+  }
+
+  .create-thread-card input,
+  .create-thread-card textarea {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+    border-radius: 10px;
+  }
+
+  .create-thread-card textarea {
+    min-height: 120px;
+  }
+
+  .create-thread-card button {
+    padding: 11px;
+    font-size: 0.95rem;
+    border-radius: 12px;
+  }
+}
+
+/* =========================
+   EXTRA UX — VERY SMALL PHONE
+========================= */
+@media (max-width: 360px) {
+  .navbar-logo {
+    font-size: 15px;
+  }
+
+  .create-thread-card h2 {
+    font-size: 1.15rem;
+  }
+}
+
+
 /* Leaderboard Page */
 .leaderboard-item {
-  position: relative; /* penting */
+  position: relative; 
   display: grid;
   grid-template-columns: 12px 32px 1fr auto;
   align-items: center;
   gap: 12px;
-  padding: 5px 7px 8px; /* extra space buat garis */
+  padding: 5px 7px 8px; 
   border-radius: 12px;
   cursor: pointer;
   margin-bottom: 8px;
@@ -433,14 +490,20 @@ body[data-theme='dark'] .navbar-login-icon {
   color: var(--light);
 }
 
-.rank-1 { color: #f59e0b; }
-.rank-2 { color: #9ca3af; }
-.rank-3 { color: #b45309; }
+.rank-1 {
+  color: #f59e0b;
+}
+.rank-2 {
+  color: #9ca3af;
+}
+.rank-3 {
+  color: #b45309;
+}
 
 .avatar {
   width: 32px;
   height: 32px;
-   border-radius: 10px;
+  border-radius: 10px;
   object-fit: cover;
 }
 
@@ -463,25 +526,98 @@ body[data-theme='dark'] .navbar-login-icon {
   border-radius: 10px;
 }
 
+/* =========================
+   RESPONSIVE — TABLET
+========================= */
+@media (max-width: 1023px) {
+  .leaderboard-item {
+    grid-template-columns: 10px 28px 1fr auto;
+    gap: 10px;
+    padding: 6px 8px;
+  }
+
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+  }
+
+  .name {
+    font-size: 11.5px;
+  }
+
+  .score {
+    font-size: 11.5px;
+    width: 28px;
+  }
+}
+
+/* =========================
+   RESPONSIVE — MOBILE
+========================= */
+@media (max-width: 767px) {
+  .leaderboard-item {
+    grid-template-columns: 8px 26px 1fr auto;
+    gap: 8px;
+    padding: 6px 6px 7px;
+    border-radius: 10px;
+  }
+
+  .leaderboard-item::after {
+    left: 0;
+    right: 0;
+  }
+
+  .rank {
+    font-size: 12px;
+  }
+
+  .avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+  }
+
+  .name {
+    font-size: 11px;
+  }
+
+  .score {
+    font-size: 11px;
+    width: 26px;
+    border-radius: 8px;
+  }
+}
+
+/* =========================
+   VERY SMALL PHONE
+========================= */
+@media (max-width: 360px) {
+  .leaderboard-item {
+    gap: 6px;
+  }
+
+  .name {
+    font-size: 10.5px;
+  }
+}
+
 
 /* Threads Page */
-/* ================================
-   THREADS PAGE – FINAL CLEAN GRID
-================================ */
-
 .forum-layout {
   height: 800px;
   margin: 0 auto;
   padding: 24px 16px;
   display: grid;
   grid-template-columns: 280px 1fr 260px;
-  grid-template-rows: auto 1fr; 
+  grid-template-rows: auto 1fr;
   column-gap: 32px;
   row-gap: 16px;
   align-items: start;
+  width: 100%;
+  max-width: 1300px;
 }
 
-/* ===== SECTION TITLES (SEJAJAR) ===== */
 .section-title {
   grid-row: 1;
   font-size: 15px;
@@ -497,16 +633,14 @@ body[data-theme='dark'] .navbar-login-icon {
   justify-content: center;
 }
 
-[data-theme='dark'] .section-title {
-  background: var(--dark);
-}
-
 .section-title.left {
   grid-column: 1;
 }
 
 .section-title.center {
   grid-column: 2;
+  width: 100%;
+  max-width: 750px;
 }
 
 .section-title.right {
@@ -514,26 +648,21 @@ body[data-theme='dark'] .navbar-login-icon {
   text-align: center;
 }
 
-/* ===== PANELS POSITION ===== */
 .forum-left {
   grid-column: 1;
   grid-row: 2;
-
 }
 
 .forum-center {
   grid-column: 2;
   grid-row: 2;
-
 }
 
 .forum-right {
   grid-column: 3;
   grid-row: 2;
-
 }
 
-/* ===== STICKY SIDE PANELS ===== */
 .forum-left,
 .forum-right {
   position: sticky;
@@ -546,13 +675,6 @@ body[data-theme='dark'] .navbar-login-icon {
   border: 2px solid var(--light);
 }
 
-/* DARK MODE */
-[data-theme='dark'] .forum-left,
-[data-theme='dark'] .forum-right {
-  background: var(--dark);
-}
-
-/* ===== CATEGORY LIST ===== */
 .forum-right ul {
   list-style: none;
   padding: 0;
@@ -583,11 +705,6 @@ body[data-theme='dark'] .navbar-login-icon {
   font-weight: 700;
 }
 
-
-body[data-theme='dark'] .forum-right li.active {
-  color: var(--dark);
-}
-
 .thread-list {
   list-style: none;
   padding: 0;
@@ -600,19 +717,15 @@ body[data-theme='dark'] .forum-right li.active {
   background: var(--accent);
   padding: 16px;
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
   box-shadow: var(--box-shadow-first);
   border: 2px solid var(--light);
-}
-
-[data-theme='dark'] .thread-card {
-  background: var(--dark);
+  width: 100%;
+  max-width: 750px;
 }
 
 .thread-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
 }
 
 .thread-header {
@@ -629,14 +742,13 @@ body[data-theme='dark'] .forum-right li.active {
   object-fit: cover;
 }
 
-
 .thread-info {
   font-size: 12px;
   color: var(--light);
 }
 
 .thread-author strong {
- color: var(--light);
+  color: var(--light);
 }
 
 .thread-title {
@@ -660,7 +772,185 @@ body[data-theme='dark'] .forum-right li.active {
 
 .thread-meta {
   display: flex;
-  justify-content: space-between; /* kiri & kanan */
+  justify-content: space-between; 
+  align-items: center;
+  font-size: 12px;
+  color: var(--light);
+  margin-top: 10px;
+  background: var(--accent);
+  border-radius: 10px;
+}
+
+/* Threads Page */
+.forum-layout {
+  height: 800px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: grid;
+  grid-template-columns: 280px 1fr 260px;
+  grid-template-rows: auto 1fr;
+  column-gap: 32px;
+  row-gap: 16px;
+  align-items: start;
+  width: 100%;
+  max-width: 1300px;
+}
+
+.section-title {
+  grid-row: 1;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--light);
+  background: var(--accent);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 2px solid var(--light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-title.left {
+  grid-column: 1;
+}
+
+.section-title.center {
+  grid-column: 2;
+  width: 100%;
+  max-width: 750px;
+}
+
+.section-title.right {
+  grid-column: 3;
+  text-align: center;
+}
+
+.forum-left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.forum-center {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.forum-right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.forum-left,
+.forum-right {
+  position: sticky;
+  top: 24px;
+  height: fit-content;
+  padding: 12px;
+  background: var(--accent);
+  border-radius: 16px;
+  box-shadow: var(--box-shadow-first);
+  border: 2px solid var(--light);
+}
+
+.forum-right ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.forum-right li {
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--light);
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.forum-right li:hover {
+  background: #f3f4f6;
+}
+
+.forum-right li.active {
+  background: #eff6ff;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.thread-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.thread-card {
+  background: var(--accent);
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: var(--box-shadow-first);
+  border: 2px solid var(--light);
+  width: 100%;
+  max-width: 750px;
+}
+
+.thread-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.thread-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.thread-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.thread-info {
+  font-size: 12px;
+  color: var(--light);
+}
+
+.thread-author strong {
+  color: var(--light);
+}
+
+.thread-title {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--light);
+  margin: 8px 0;
+  text-decoration: none;
+}
+
+.thread-title:hover {
+  color: #2563eb;
+}
+
+.thread-body {
+  font-size: 14px;
+  color: var(--light);
+  line-height: 1.6;
+}
+
+.thread-meta {
+  display: flex;
+  justify-content: space-between; 
   align-items: center;
   font-size: 12px;
   color: var(--light);
@@ -670,22 +960,8 @@ body[data-theme='dark'] .forum-right li.active {
 }
 
 
-@media (max-width: 900px) {
-  .forum-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .forum-left,
-  .forum-right {
-    position: static;
-  }
-}
 
 /* Login Page dan Register Page */
-/* =========================
-   AUTH CONTAINER
-   UX: Focus & Simplicity
-========================= */
 .auth-container {
   min-height: 100vh;
   display: flex;
@@ -695,24 +971,16 @@ body[data-theme='dark'] .forum-right li.active {
   padding: 24px;
 }
 
-/* =========================
-   FORM CARD
-   UX: Aesthetic–Usability
-========================= */
 .auth-form {
   width: 100%;
   max-width: 360px;
   background: var(--light);
   padding: 32px 28px;
   border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  box-shadow: var(--box-shadow-first);
   text-align: center;
 }
 
-/* =========================
-   TITLE
-   UX: Visual Hierarchy
-========================= */
 .auth-title {
   font-size: 24px;
   font-weight: 800;
@@ -720,10 +988,6 @@ body[data-theme='dark'] .forum-right li.active {
   color: #111827;
 }
 
-/* =========================
-   INPUT
-   UX: Fitts’s Law
-========================= */
 .auth-input {
   width: 100%;
   padding: 14px 16px;
@@ -737,13 +1001,9 @@ body[data-theme='dark'] .forum-right li.active {
 .auth-input:focus {
   outline: none;
   border-color: #2563eb;
-  box-shadow: 0 0 0 4px rgba(37,99,235,0.15);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
 }
 
-/* =========================
-   BUTTON
-   UX: Primary Action
-========================= */
 .auth-button {
   width: 100%;
   margin-top: 8px;
@@ -755,459 +1015,378 @@ body[data-theme='dark'] .forum-right li.active {
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.auth-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 24px rgba(37,99,235,0.35);
-}
-
-.auth-button:active {
-  transform: scale(0.98);
-}
-
-/* =========================
-   FOOTER
-   UX: Secondary Action
-========================= */
-.auth-footer {
-  margin-top: 20px;
-  font-size: 13px;
-  color: #6b7280;
-}
-
-.auth-link {
-  color: #2563eb;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.auth-link:hover {
-  text-decoration: underline;
-}
 
 /* Thread Detail Page */
 /* =====================
-   THREAD DETAIL
+   PAGE WRAPPER
 ===================== */
 .thread-detail {
-  max-width: 900px;
+  max-width: 840px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 24px 16px 80px;
+  background: var(--accent);
+  color: var(--dark);
+}
+
+/* =====================
+   CARD BASE
+===================== */
+.thread-header-detail,
+.thread-body,
+.comment-list,
+.comment-form,
+.comment-login-hint {
+  background: var(--secondary);
+  border-radius: 14px;
+  padding: 5px;
+  margin-bottom: 20px;
+  border: 2px solid var(--light);
 }
 
 /* =====================
    HEADER
 ===================== */
-.thread-header-detail {
-  margin-bottom: 16px;
-}
-
 .thread-main {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .thread-owner {
   display: flex;
   gap: 12px;
-  align-items: center;
 }
 
-.thread-author {
-  font-size: 14px;
-  color: #666;
+.thread-owner h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
-.btn-delete {
-  background: #dc2626;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* =====================
-   BODY
-===================== */
-.thread-body {
-  margin: 20px 0;
-  line-height: 1.6;
-}
-
-/* =====================
-   AVATAR
-===================== */
-.avatar {
-  width: 42px;
-  height: 42px;
-}
-
-.avatar-img {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.avatar-fallback {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: #6366f1;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-}
-
-/* =====================
-   VOTE SECTION
-===================== */
-.thread-vote-section {
-  display: flex;
-  gap: 32px;
-  margin: 24px 0;
-}
-
-.vote-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.vote-label {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-/* BUTTON UMUM */
-.vote-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.2s;
-}
-
-/* =====================
-   VOTE UP (HIJAU)
-===================== */
-.vote-btn.up {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.vote-btn.up:hover {
-  background: #bbf7d0;
-}
-
-.vote-btn.up.active {
-  background: #22c55e;
-  color: #fff;
-}
-
-/* =====================
-   VOTE DOWN (MERAH)
-===================== */
-.vote-btn.down {
-  background: #fee2e2;
-  color: #7f1d1d;
-}
-
-.vote-btn.down:hover {
-  background: #fecaca;
-}
-
-.vote-btn.down.active {
-  background: #ef4444;
-  color: #fff;
-}
-
-.vote-score {
-  font-weight: bold;
-}
-
-/* =====================
-   COMMENTS
-===================== */
-.comment-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 16px;
-}
-
-.comment-item {
-  display: flex;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.comment-content p {
-  margin-top: 4px;
-}
-
-/* =====================
-   COMMENT FORM
-===================== */
-.comment-form {
+.thread-meta {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: #555;
   display: flex;
   gap: 8px;
-  margin-top: 16px;
 }
 
-.comment-form input {
-  flex: 1;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
-}
-
-.comment-form input:disabled {
-  background: #f3f4f6;
-  cursor: not-allowed;
-}
-
-.send-btn {
-  background: #2563eb;
-  color: #fff;
-  border: none;
-  padding: 0 16px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.send-btn:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
-}
-
-
-
-/* =========================
-   THREAD MAIN
-========================= */
-.thread-main {
-  flex: 1;
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.thread-owner {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.thread-main h2 {
-  margin: 0;
-  font-size: 22px;
-  line-height: 1.2;
-}
-
-.thread-author {
-  font-size: 13px;
-  color: #94a3b8;
-  margin-top: 4px;
-}
-
-/* =========================
+/* =====================
    AVATAR
-========================= */
+===================== */
 .avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  overflow: hidden;
-  background: #1e293b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
 }
 
-.avatar img {
-  width: 100%;
-  height: 100%;
+.avatar-img,
+.avatar-fallback {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+}
+
+.avatar-img {
   object-fit: cover;
 }
 
 .avatar-fallback {
+  background: var(--gradient-bottom);
+  color: var(--dark);
   font-weight: 700;
-  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* =========================
-   BODY
-========================= */
+/* =====================
+   DELETE BUTTON
+===================== */
+.btn-delete {
+  background: transparent;
+  border: 1px solid var(--votedown);
+  color: var(--votedown);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+  background: var(--votedown);
+  color: var(--light);
+}
+
+/* =====================
+   BODY CONTENT
+===================== */
 .thread-body {
-  margin-top: 16px;
-  line-height: 1.7;
-  color: #e5e7eb;
+  line-height: 1.75;
+  font-size: 0.95rem;
 }
 
 .thread-body p {
-  margin-bottom: 12px;
+  margin-bottom: 0.8rem;
 }
 
-/* =========================
+/* =====================
+   VOTE AREA
+===================== */
+.vote-button {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.vote-button button {
+  border: none;
+  background: var(--grey);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.vote-button button.up {
+  background: var(--voteup);
+  color: var(--dark);
+}
+
+.vote-button button.down {
+  background: var(--votedown);
+  color: var(--light);
+}
+
+/* =====================
    COMMENTS
-========================= */
-h4 {
-  margin-top: 32px;
-  margin-bottom: 12px;
-}
-
+===================== */
 .comment-list {
   list-style: none;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
 }
 
 .comment-item {
   display: flex;
   gap: 12px;
-  background: #020617;
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid #1e293b;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--grey);
 }
 
-.comment-content {
-  flex: 1;
+.comment-item:last-child {
+  border-bottom: none;
 }
 
 .comment-content strong {
-  font-size: 14px;
-  color: #38bdf8;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.comment-content span {
+  font-size: 0.75rem;
+  color: #555;
 }
 
 .comment-content p {
-  margin-top: 4px;
-  font-size: 14px;
-  color: #e5e7eb;
+  margin-top: 6px;
+  font-size: 0.9rem;
 }
 
-/* ===== DELETE COMMENT BUTTON ===== */
-.comment-delete-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-
-  background: transparent;
-  border: none;
-  color: #9ca3af;
-  font-size: 14px;
-  cursor: pointer;
-
-  padding: 4px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-}
-
-.comment-delete-btn:hover {
-  color: #ef4444;
-  background: rgba(239, 68, 68, 0.15);
-  transform: scale(1.05);
-}
-
-/* =========================
+/* =====================
    COMMENT FORM
-========================= */
+===================== */
 .comment-form {
   display: flex;
   gap: 10px;
-  margin-top: 16px;
+  align-items: center;
 }
 
 .comment-form input {
   flex: 1;
-  background: #020617;
-  border: 1px solid #1e293b;
-  padding: 10px 12px;
-  border-radius: 10px;
-  color: #e5e7eb;
+  border: 1px solid var(--grey);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  outline: none;
 }
 
-.comment-form input::placeholder {
-  color: #64748b;
+.comment-form input:focus {
+  border-color: var(--primary);
 }
 
-.send-btn {
-  background: #38bdf8;
+.comment-form button {
+  background: var(--gradient-right);
   border: none;
-  color: #020617;
-  padding: 0 14px;
-  border-radius: 10px;
+  color: var(--dark);
+  padding: 10px 16px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 18px;
+  font-weight: 600;
+  transition: opacity 0.2s ease;
+}
+
+.comment-form button:hover {
+  opacity: 0.85;
+}
+
+/* =====================
+   LOGIN HINT
+===================== */
+.comment-login-hint {
+  text-align: center;
+  background: var(--gradient-bottom);
+}
+
+.comment-login-hint p {
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.comment-login-hint button {
+  background: var(--accent);
+  border: none;
+  color: var(--light);
+  padding: 10px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.comment-login-hint button:hover {
+  opacity: 0.9;
+}
+
+/* =====================
+   RESPONSIVE
+===================== */
+@media (max-width: 640px) {
+  .thread-main {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn-delete {
+    align-self: flex-start;
+  }
+}
+
+/* =========================
+   VOTE SECTION
+========================= */
+.thread-vote-section {
   display: flex;
+  flex-direction: column;
+  gap: 12px;
   align-items: center;
 }
 
-.send-btn:hover {
-  background: #0ea5e9;
+/* =========================
+   BASE BUTTON
+========================= */
+.vote-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  border: 1px solid var(--grey);
+  background: var(--light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  box-shadow: var(--box-shadow-first);
 }
-
 
 /* =========================
-   DARK MODE
+   ICON
 ========================= */
-
-[data-theme='dark'] .thread-detail {
-  color: #e5e7eb;
+.vote-btn svg {
+  font-size: 18px;
 }
-
-[data-theme='dark'] .vote-count {
-  color: #e5e7eb;
-}
-
-[data-theme='dark'] .thread-author {
-  color: #9ca3af;
-}
-
-[data-theme='dark'] .comment-list li {
-  border-color: #374151;
-}
-
-[data-theme='dark'] .comment-form input {
-  background: #1f2933;
-  color: #e5e7eb;
-  border-color: #374151;
-}
-
-
 
 /* =========================
-   MOBILE UX
+   COUNT
 ========================= */
-@media (max-width: 640px) {
-  .thread-detail {
-    padding: 18px;
+.vote-btn span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* =========================
+   UP VOTE
+========================= */
+.vote-btn.up {
+  color: #16a34a; /* hijau */
+  border-color: #16a34a40;
+}
+
+.vote-btn.up:hover {
+  background: #16a34a;
+  color: var(--light);
+}
+
+.vote-btn.up.active {
+  background: #16a34a;
+  color: var(--light);
+}
+
+/* =========================
+   DOWN VOTE
+========================= */
+.vote-btn.down {
+  color: #dc2626; /* merah */
+  border-color: #dc262640;
+}
+
+.vote-btn.down:hover {
+  background: #dc2626;
+  color: var(--light);
+}
+
+.vote-btn.down.active {
+  background: #dc2626;
+  color: var(--light);
+}
+
+/* =========================
+   LABEL (OPTIONAL)
+========================= */
+.vote-btn.up::after {
+  content: "Vote Up";
+  font-size: 11px;
+}
+
+.vote-btn.down::after {
+  content: "Vote Down";
+  font-size: 11px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 768px) {
+  .thread-vote-section {
+    flex-direction: row;
   }
 
-  .thread-detail-title {
-    font-size: 22px;
-  }
-
-  .vote-section {
-    flex-wrap: wrap;
+  .vote-btn {
+    width: 52px;
+    height: 52px;
   }
 }
 
+
+
+
+/* Footer Page */
 .footer {
   height: 64px;
   padding: 0 24px;
@@ -1253,104 +1432,3 @@ h4 {
   opacity: 0.6;
 }
 
-/* Threads Page Loading */
-/* =============================
-   LOADING / SKELETON
-============================= */
-
-
-
-.threads-error {
-  max-width: 480px;
-  margin: 80px auto;
-  padding: 28px;
-  text-align: center;
-  border-radius: 16px;
-  background: #fee2e2;
-  color: #991b1b;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.threads-error-icon {
-  font-size: 42px;
-  margin-bottom: 12px;
-  color: #dc2626;
-}
-
-.threads-error h3 {
-  margin-bottom: 6px;
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.threads-error p {
-  font-size: 14px;
-  opacity: 0.9;
-}
-
-
-[data-theme='dark'] .threads-error {
-  background: #3f1d1d;
-  color: #fecaca;
-}
-
-[data-theme='dark'] .threads-error-icon {
-  color: #f87171;
-}
-
-.comment-login-hint {
-  margin-top: 16px;
-  padding: 12px;
-  border: 1px dashed #ccc;
-  border-radius: 8px;
-  text-align: center;
-  color: #666;
-}
-
-.comment-login-hint p {
-  margin-bottom: 8px;
-  font-size: 14px;
-}
-
-.login-btn {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.login-btn:hover {
-  background: #1e40af;
-}
-
-.loading-container {
-  min-height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 4px solid #e5e7eb;
-  border-top-color: #2563eb;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* aksesibilitas */
-@media (prefers-reduced-motion: reduce) {
-  .spinner {
-    animation: none;
-  }
-}
