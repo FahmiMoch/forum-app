@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getLeaderboards } from '../api/leaderboardApi';
-import { Link } from 'react-router-dom';
-import ThreadsLoading from '../components/Loading/ThreadPageLoading';
+import Loading from '../components/Loading/Loading';
 
-export default function LeaderboardPage({ limit }) {
+export default function LeaderboardPage() {
   const [leaderboards, setLeaderboards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,7 +11,9 @@ export default function LeaderboardPage({ limit }) {
     const fetchLeaderboard = async () => {
       try {
         const data = await getLeaderboards();
-        const sorted = data.leaderboards.sort((a, b) => b.score - a.score);
+        const sorted = data.leaderboards.sort(
+          (a, b) => b.score - a.score
+        );
         setLeaderboards(sorted);
       } catch (err) {
         setError(err.message || 'Failed to fetch leaderboards');
@@ -20,31 +21,32 @@ export default function LeaderboardPage({ limit }) {
         setLoading(false);
       }
     };
+
     fetchLeaderboard();
   }, []);
 
-   if (loading) {
-      return <ThreadsLoading />;
-    }
+  if (loading) return <Loading />;
   if (error) return <p className="error">{error}</p>;
 
-  const displayed = limit ? leaderboards.slice(0, limit) : leaderboards;
-
   return (
-    <div className={`leaderboard-container ${limit ? 'compact' : ''}`}>
-
+    <div className="leaderboard-container">
       <ul className="leaderboard-list">
-        {displayed.map((item, index) => (
+        {leaderboards.map((item, index) => (
           <li
             key={item.user.id}
-            className={`leaderboard-item ${index < 3 ? 'top-rank' : ''}`}
+            className={`leaderboard-item ${
+              index < 3 ? 'top-rank' : ''
+            }`}
           >
             <span className={`rank rank-${index + 1}`}>
               {index + 1}
             </span>
 
             <img
-              src={item.user.avatar || 'https://via.placeholder.com/40'}
+              src={
+                item.user.avatar ||
+                'https://via.placeholder.com/40'
+              }
               alt={item.user.name}
               className="avatar"
             />
@@ -54,12 +56,6 @@ export default function LeaderboardPage({ limit }) {
           </li>
         ))}
       </ul>
-
-      {limit && (
-        <Link to="/leaderboard" className="see-all">
-          Lihat semua →
-        </Link>
-      )}
     </div>
   );
 }

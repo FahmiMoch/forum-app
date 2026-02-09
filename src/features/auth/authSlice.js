@@ -1,9 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { loginUser, registerUser, getProfile } from '../../api/authApi';
 
-/**
- * LOGIN
- */
+
 export const login = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
@@ -18,9 +16,6 @@ export const login = createAsyncThunk(
   }
 );
 
-/**
- * REGISTER
- */
 export const register = createAsyncThunk(
   'auth/register',
   async ({ name, email, password }, { rejectWithValue }) => {
@@ -35,9 +30,7 @@ export const register = createAsyncThunk(
   }
 );
 
-/**
- * FETCH PROFILE
- */
+
 export const fetchMe = createAsyncThunk(
   'auth/fetchMe',
   async (_, { rejectWithValue }) => {

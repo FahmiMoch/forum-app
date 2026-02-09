@@ -1,19 +1,33 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faChevronUp,
+  faChevronDown,
+} from '@fortawesome/free-solid-svg-icons';
 
-export default function VoteButton({ currentVote, onVote }) {
+export default function VoteButton({
+  upVotes,
+  downVotes,
+  isUpVoted,
+  isDownVoted,
+  onVote,
+}) {
   return (
-    <div style={{ display: 'flex', gap: '5px' }}>
+    <div className="thread-vote-section">
       <button
-        style={{ color: currentVote === 1 ? 'green' : 'gray' }}
-        onClick={() => onVote(currentVote === 1 ? 0 : 1)}
+        className={`vote-btn up ${isUpVoted ? 'active' : ''}`}
+        onClick={() => onVote(isUpVoted ? 0 : 1)}
       >
-        ▲
+        <FontAwesomeIcon icon={faChevronUp} />
+        <span>{upVotes}</span>
       </button>
+
       <button
-        style={{ color: currentVote === -1 ? 'red' : 'gray' }}
-        onClick={() => onVote(currentVote === -1 ? 0 : -1)}
+        className={`vote-btn down ${isDownVoted ? 'active' : ''}`}
+        onClick={() => onVote(isDownVoted ? 0 : -1)}
       >
-        ▼
+        <FontAwesomeIcon icon={faChevronDown} />
+        <span>{downVotes}</span>
       </button>
     </div>
   );

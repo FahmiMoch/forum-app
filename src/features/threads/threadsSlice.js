@@ -7,108 +7,108 @@ import {
   deleteThread,
 } from '../../api/threadsApi';
 
-// =====================
-// FETCH THREADS (PUBLIC)
-// =====================
+/* =====================
+   ASYNC THUNKS
+===================== */
+
+// ✅ GET ALL THREADS
 export const fetchThreads = createAsyncThunk(
   'threads/fetchThreads',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getAllThreads();
-      return response; // bisa { threads } atau langsung array
-    } catch (err) {
-      return rejectWithValue(
-        err.response?.data || 'Failed to fetch threads'
-      );
+      const threads = await getAllThreads(); // ⬅️ ARRAY LANGSUNG
+      return threads;
+    } catch (error) {
+      console.error('fetchThreads error:', error);
+      return rejectWithValue('Failed to fetch threads');
     }
   }
 );
 
-// =====================
-// FETCH THREAD DETAIL (PUBLIC)
-// =====================
+// ✅ GET THREAD DETAIL
 export const fetchThreadDetail = createAsyncThunk(
   'threads/fetchThreadDetail',
   async (threadId, { rejectWithValue }) => {
     try {
-      const response = await getThreadById(threadId);
-      return response; // bisa { detailThread }
-    } catch (err) {
-      return rejectWithValue(
-        err.response?.data || 'Failed to fetch thread detail'
-      );
+      const detailThread = await getThreadById(threadId);
+      return detailThread;
+    } catch (error) {
+      console.error('fetchThreadDetail error:', error);
+      return rejectWithValue('Failed to fetch thread detail');
     }
   }
 );
 
-// =====================
-// CREATE THREAD (LOGIN)
-// =====================
+// ✅ CREATE THREAD
 export const addThread = createAsyncThunk(
   'threads/addThread',
   async ({ title, body, category }, { rejectWithValue }) => {
     try {
-      const response = await createThread({ title, body, category });
-      return response;
-    } catch (err) {
-      return rejectWithValue(
-        err.response?.data || 'Failed to create thread'
-      );
+      const thread = await createThread({ title, body, category });
+      return thread;
+    } catch (error) {
+      console.error('addThread error:', error);
+      return rejectWithValue('Failed to create thread');
     }
   }
 );
 
-// =====================
-// DELETE THREAD (LOGIN)
-// =====================
+// ✅ DELETE THREAD
 export const deleteThreadAsync = createAsyncThunk(
   'threads/deleteThread',
   async (threadId, { rejectWithValue }) => {
     try {
       await deleteThread(threadId);
       return threadId;
-    } catch (err) {
-      return rejectWithValue(
-        err.response?.data?.message || 'Gagal menghapus thread'
-      );
+    } catch (error) {
+      console.error('deleteThread error:', error);
+      return rejectWithValue('Failed to delete thread');
     }
   }
 );
 
-// =====================
-// VOTE THREAD (LOGIN)
-// =====================
+// ✅ VOTE THREAD
 export const voteOnThread = createAsyncThunk(
   'threads/voteOnThread',
   async ({ threadId, voteType }, { getState, rejectWithValue }) => {
     const user = getState().auth.user;
-    if (!user) {
-      return rejectWithValue('User not authenticated');
-    }
+    if (!user) return rejectWithValue('Unauthorized');
 
     try {
       await voteThread(threadId, voteType);
       return { threadId, voteType, userId: user.id };
-    } catch (err) {
-      return rejectWithValue(
-        err.response?.data || 'Failed to vote thread'
-      );
+    } catch (error) {
+      console.error('voteThread error:', error);
+      return rejectWithValue('Failed to vote');
     }
   }
 );
 
-// =====================
-// SLICE
-// =====================
+/* =====================
+   HELPERS
+===================== */
+
+const applyVote = (thread, userId, voteType) => {
+  if (!thread) return;
+
+  thread.upVotesBy = thread.upVotesBy.filter((id) => id !== userId);
+  thread.downVotesBy = thread.downVotesBy.filter((id) => id !== userId);
+
+  if (voteType === 1) thread.upVotesBy.push(userId);
+  if (voteType === -1) thread.downVotesBy.push(userId);
+};
+
+/* =====================
+   SLICE
+===================== */
+
 const threadsSlice = createSlice({
   name: 'threads',
+
   initialState: {
     threads: [],
     threadDetail: null,
-
-    loadingThreads: false,
-    loadingDetail: false,
-
+    loading: false,
     error: null,
   },
 
@@ -120,72 +120,75 @@ const threadsSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      // ===== FETCH THREADS =====
+
+      /* FETCH THREADS */
       .addCase(fetchThreads.pending, (state) => {
-        state.loadingThreads = true;
+        state.loading = true;
         state.error = null;
       })
       .addCase(fetchThreads.fulfilled, (state, action) => {
-        state.loadingThreads = false;
-        state.threads =
-          action.payload.threads || action.payload || [];
+        state.loading = false;
+        state.error = null;
+
+        state.threads = action.payload.map((thread) => ({
+          ...thread,
+          totalComments: thread.totalComments ?? 0,
+        }));
       })
       .addCase(fetchThreads.rejected, (state, action) => {
-        state.loadingThreads = false;
+        state.loading = false;
         state.error = action.payload;
       })
 
-      // ===== FETCH DETAIL =====
+      /* FETCH THREAD DETAIL */
       .addCase(fetchThreadDetail.pending, (state) => {
-        state.loadingDetail = true;
-        state.threadDetail = null;
+        state.loading = true;
+        state.error = null;
       })
       .addCase(fetchThreadDetail.fulfilled, (state, action) => {
-        state.loadingDetail = false;
-        state.threadDetail =
-          action.payload.detailThread || action.payload;
+        state.loading = false;
+        state.threadDetail = action.payload;
       })
       .addCase(fetchThreadDetail.rejected, (state, action) => {
-        state.loadingDetail = false;
+        state.loading = false;
         state.error = action.payload;
       })
 
-      // ===== ADD THREAD =====
+      /* ADD THREAD */
+      .addCase(addThread.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(addThread.fulfilled, (state, action) => {
-        state.threads.unshift(action.payload);
+        state.loading = false;
+        state.threads.unshift({
+          ...action.payload,
+          totalComments: 0,
+        });
+      })
+      .addCase(addThread.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
-      // ===== DELETE THREAD =====
+      /* DELETE THREAD */
       .addCase(deleteThreadAsync.fulfilled, (state, action) => {
         state.threads = state.threads.filter(
           (t) => t.id !== action.payload
         );
-
-        if (state.threadDetail?.id === action.payload) {
-          state.threadDetail = null;
-        }
       })
 
-      // ===== VOTE THREAD =====
+      /* VOTE THREAD */
       .addCase(voteOnThread.fulfilled, (state, action) => {
         const { threadId, voteType, userId } = action.payload;
 
-        const applyVote = (thread) => {
-          if (!thread) return;
+        applyVote(
+          state.threads.find((t) => t.id === threadId),
+          userId,
+          voteType
+        );
 
-          thread.upVotesBy = thread.upVotesBy.filter(
-            (id) => id !== userId
-          );
-          thread.downVotesBy = thread.downVotesBy.filter(
-            (id) => id !== userId
-          );
-
-          if (voteType === 1) thread.upVotesBy.push(userId);
-          if (voteType === -1) thread.downVotesBy.push(userId);
-        };
-
-        applyVote(state.threads.find((t) => t.id === threadId));
-        applyVote(state.threadDetail);
+        applyVote(state.threadDetail, userId, voteType);
       });
   },
 });

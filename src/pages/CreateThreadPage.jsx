@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addThread } from '../features/threads/threadsSlice';
@@ -8,16 +8,17 @@ export default function CreateThreadPage() {
   const navigate = useNavigate();
 
   const token = useSelector(state => state.auth.token);
-  const loading = useSelector(state => state.threads.loading);
+  const loading = useSelector(
+    state => state.threads.loadingThreads
+  );
 
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [body, setBody] = useState('');
 
-  if (!token) {
-    navigate('/login');
-    return null;
-  }
+  useEffect(() => {
+    if (!token) navigate('/login');
+  }, [token, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,53 +35,37 @@ export default function CreateThreadPage() {
   };
 
   return (
-   <div className="create-thread-page">
+    <div className="create-thread-page">
+      <div className="create-thread-card">
+        <h2>Create New Thread</h2>
 
-  <div className="create-thread-card">
-    <h2 className="create-thread-title">
-      <i className="fas fa-pen"></i>
-      <span>Create New Thread</span>
-    </h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            placeholder="Judul thread"
+            required
+          />
 
-    <form onSubmit={handleSubmit} className="create-thread-form">
+          <input
+            value={category}
+            onChange={e => setCategory(e.target.value)}
+            placeholder="Kategori (opsional)"
+          />
 
-      <div className="form-group">
-        <label>Title</label>
-        <input
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          placeholder="Judul thread yang jelas dan singkat"
-        />
+          <textarea
+            value={body}
+            onChange={e => setBody(e.target.value)}
+            rows={6}
+            placeholder="Isi thread"
+            required
+          />
+
+          <button disabled={loading}>
+            {loading ? 'Posting...' : 'Post Thread'}
+          </button>
+        </form>
       </div>
-
-      <div className="form-group">
-        <label>Category</label>
-        <input
-          value={category}
-          onChange={e => setCategory(e.target.value)}
-          placeholder="misal: react, redux, css (opsional)"
-        />
-      </div>
-
-      <div className="form-group">
-        <label>Content</label>
-        <textarea
-          value={body}
-          onChange={e => setBody(e.target.value)}
-          placeholder="Tulis isi thread di sini..."
-          rows={6}
-        />
-      </div>
-
-      <div className="form-action">
-        <button disabled={loading}>
-          {loading ? 'Posting...' : 'Post Thread'}
-        </button>
-      </div>
-
-    </form>
-  </div>
-
-</div>
+    </div>
   );
 }

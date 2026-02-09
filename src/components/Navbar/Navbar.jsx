@@ -9,7 +9,6 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // 🌗 THEME
   const [theme, setTheme] = useState(
     localStorage.getItem('theme') || 'light'
   );
@@ -23,7 +22,6 @@ export default function Navbar() {
     setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  // ➕ CREATE THREAD
   const handleCreateThread = () => {
     if (!token) {
       navigate('/login');
@@ -32,7 +30,6 @@ export default function Navbar() {
     }
   };
 
-  // 👤 USER ICON
   const handleUserClick = () => {
     if (!token) {
       navigate('/login');
@@ -44,7 +41,6 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      {/* LOGO */}
       <div
         className="navbar-logo"
         onClick={() => navigate('/')}
@@ -53,9 +49,7 @@ export default function Navbar() {
         <span>ForumApp</span>
       </div>
 
-      {/* ACTION */}
       <div className="navbar-action">
-        {/* ➕ CREATE THREAD */}
         <button
           className="icon-btn"
           onClick={handleCreateThread}
@@ -64,7 +58,6 @@ export default function Navbar() {
           <i className="fas fa-plus"></i>
         </button>
 
-        {/* 🌗 THEME */}
         <button
           className="icon-btn"
           onClick={toggleTheme}
@@ -73,7 +66,6 @@ export default function Navbar() {
           <i className={`fas ${theme === 'light' ? 'fa-moon' : 'fa-sun'}`} />
         </button>
 
-        {/* 👤 USER */}
         <button
           className="icon-btn"
           onClick={handleUserClick}
