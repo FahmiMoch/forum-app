@@ -89,7 +89,6 @@ html, body {
   font-family: Arial, Helvetica, sans-serif;
   background: var(--gradient-bottom);
   color: var(--light);
-  height: 100%;
 }
 
 [data-theme="dark"] body {
@@ -830,50 +829,15 @@ body[data-theme='dark'] .forum-right li.active {
 
 .thread-meta {
   display: flex;
-  gap: 16px;
+  justify-content: space-between; /* kiri & kanan */
+  align-items: center;
   font-size: 12px;
   color: var(--light);
   margin-top: 10px;
+  background: var(--accent);
+  border-radius: 10px;
 }
 
-.thread-votes {
-  display: flex;
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.vote-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: none;
-  background: var(--light);
-  cursor: pointer;
-  font-size: 13px;
-  transition: all 0.2s ease;
-}
-
-.vote-btn:hover {
-  background: #e5e7eb;
-}
-
-/* Feedback jelas */
-.vote-btn.active.up {
-  background: #dcfce7;
-  color: #16a34a;
-}
-
-.vote-btn.active.down {
-  background: #fee2e2;
-  color: #dc2626;
-}
-
-.vote-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
 
 @media (max-width: 900px) {
   .forum-layout {
@@ -1565,4 +1529,32 @@ h4 {
 
 [data-theme='dark'] .threads-error-icon {
   color: #f87171;
+}
+
+.comment-login-hint {
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+  text-align: center;
+  color: #666;
+}
+
+.comment-login-hint p {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.login-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.login-btn:hover {
+  background: #1e40af;
 }

@@ -15,6 +15,9 @@ import {
 
 import { addComment } from '../features/comments/commentsSlice';
 
+// ⬇️ TAMBAHAN
+import  { formatDate }  from '../utils/FormatDate';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faChevronUp,
@@ -127,9 +130,15 @@ export default function ThreadDetailPage() {
 
             <div>
               <h2>{threadDetail.title}</h2>
-              <p className="thread-author">
-                by <strong>{threadDetail.owner?.name}</strong>
-              </p>
+
+              <div className="thread-meta">
+                <span>
+                  by <strong>{threadDetail.owner?.name}</strong>
+                </span>
+                <span>
+                  • {formatDate(threadDetail.createdAt)}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -152,7 +161,6 @@ export default function ThreadDetailPage() {
 
       {/* VOTE SECTION */}
       <div className="thread-vote-section">
-        {/* VOTE UP */}
         <div className="vote-box up">
           <span className="vote-label">Vote Up</span>
           <button
@@ -164,7 +172,6 @@ export default function ThreadDetailPage() {
           </button>
         </div>
 
-        {/* VOTE DOWN */}
         <div className="vote-box down">
           <span className="vote-label">Vote Down</span>
           <button
@@ -188,36 +195,48 @@ export default function ThreadDetailPage() {
             </div>
 
             <div className="comment-content">
-              <strong>{c.owner?.name}</strong>
+              <div className="comment-header">
+                <strong>{c.owner?.name}</strong>
+                <span className="comment-time">
+                  {formatDate(c.createdAt)}
+                </span>
+              </div>
+
               <p>{c.content}</p>
             </div>
           </li>
         ))}
       </ul>
 
-      {/* COMMENT FORM */}
-      <form
-        className="comment-form"
-        onSubmit={handleAddComment}
-      >
-        <input
-          name="comment"
-          placeholder={
-            token
-              ? 'Tulis komentar...'
-              : 'Login dulu untuk komentar'
-          }
-          disabled={!token}
-          required
-        />
-        <button
-          className="send-btn"
-          type="submit"
-          disabled={!token}
-        >
-          <FontAwesomeIcon icon={faPaperPlane} />
-        </button>
-      </form>
+      {/* COMMENT SECTION */}
+{token ? (
+  <form
+    className="comment-form"
+    onSubmit={handleAddComment}
+  >
+    <input
+      name="comment"
+      placeholder="Tulis komentar..."
+      required
+    />
+    <button className="send-btn" type="submit">
+      <FontAwesomeIcon icon={faPaperPlane} />
+    </button>
+  </form>
+) : (
+  <div className="comment-login-hint">
+    <p>
+      💬 <strong>Login dulu</strong> untuk ikut komentar
+    </p>
+    <button
+      className="login-btn"
+      onClick={requireLogin}
+    >
+      Login sekarang
+    </button>
+  </div>
+)}
+
     </div>
   );
 }

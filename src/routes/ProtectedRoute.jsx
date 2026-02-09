@@ -5,7 +5,6 @@ export default function ProtectedRoute({ children }) {
   const token = useSelector((state) => state.auth.token);
   const location = useLocation();
 
-  // ❌ Belum login → arahkan ke login
   if (!token) {
     return (
       <Navigate
@@ -16,6 +15,5 @@ export default function ProtectedRoute({ children }) {
     );
   }
 
-  // ✅ Sudah login → lanjut
   return children;
 }

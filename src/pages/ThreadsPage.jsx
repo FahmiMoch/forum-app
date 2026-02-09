@@ -1,11 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { fetchThreads } from '../features/threads/threadsSlice';
 import { fetchUsers } from '../features/users/usersSlice';
+
+import { formatDate } from '../utils/FormatDate';
+
 import LeaderboardPage from './LeaderboardPage';
 import ThreadsLoading from '../components/Loading/ThreadPageLoading';
-import ThreadError from '../components/Error/ThreadError'
+import ThreadError from '../components/Error/ThreadError';
 
 export default function ThreadsPage() {
   const dispatch = useDispatch();
@@ -23,43 +27,30 @@ export default function ThreadsPage() {
     dispatch(fetchUsers());
   }, [dispatch]);
 
+  // 🔄 mapping user by id
   const usersById = useMemo(() => {
     const map = {};
-    users.forEach((u) => (map[u.id] = u));
+    users.forEach((u) => {
+      map[u.id] = u;
+    });
     return map;
   }, [users]);
 
+  // 📂 kategori
   const categories = useMemo(
     () => ['All', ...new Set(threads.map((t) => t.category || 'General'))],
     [threads]
   );
 
+  // 🔍 filter kategori
   const filteredThreads =
     categoryFilter === 'All'
       ? threads
       : threads.filter((t) => t.category === categoryFilter);
 
-  const formatTime = (date) =>
-    new Date(date).toLocaleDateString('id-ID', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    });
+  if (loading) return <ThreadsLoading />;
+  if (error) return <ThreadError />;
 
-  /* =============================
-     🔥 LOADING & ERROR HANDLER
-     ============================= */
-  if (loading) {
-    return <ThreadsLoading />;
-  }
-
-  if (error) {
-    return <ThreadError />;
-  }
-
-  /* =============================
-     🔥 MAIN RENDER
-     ============================= */
   return (
     <div className="forum-layout">
       {/* LEFT */}
@@ -77,6 +68,7 @@ export default function ThreadsPage() {
 
             return (
               <li key={thread.id} className="thread-card">
+                {/* HEADER */}
                 <div className="thread-header">
                   <img
                     src={
@@ -90,11 +82,12 @@ export default function ThreadsPage() {
                   <div className="thread-info">
                     <strong>{user?.name || 'Anonymous'}</strong>
                     <div className="thread-time">
-                      {formatTime(thread.createdAt)}
+                      {formatDate(thread.createdAt)}
                     </div>
                   </div>
                 </div>
 
+                {/* TITLE */}
                 <Link
                   to={`/threads/${thread.id}`}
                   className="thread-title"
@@ -102,6 +95,7 @@ export default function ThreadsPage() {
                   {thread.title}
                 </Link>
 
+                {/* BODY PREVIEW */}
                 <p className="thread-body">
                   {(thread.body || '')
                     .replace(/<[^>]*>?/gm, '')
@@ -109,6 +103,7 @@ export default function ThreadsPage() {
                   ...
                 </p>
 
+                {/* META */}
                 <div className="thread-meta">
                   <span>#{thread.category || 'General'}</span>
                   <span>{thread.totalComments || 0} komentar</span>
