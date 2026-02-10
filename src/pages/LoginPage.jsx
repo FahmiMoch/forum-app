@@ -1,4 +1,4 @@
-import AuthForm from "../components/login/AuthForm";
+import AuthForm from "../components/auth/AuthForm";
 import useLogin from "../features/hooks/auth/useLogin";
 
 export default function LoginPage() {

@@ -129,12 +129,14 @@
 
 /* Create Thread Page */
 .create-thread-page {
+  min-height: calc(100vh - 72px); /* 72px = tinggi footer */
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px 16px;
   background: var(--gradient-bottom);
 }
+
 
 .create-thread-card {
   width: 100%;
@@ -435,188 +437,228 @@ position: sticky;
 
 /* Thread Detail Page */
 .thread-detail {
-  max-width: 840px; 
-  height: 650px;
-  margin: 40px auto;
-  padding: 24px 16px 80px;
   background: var(--accent);
-  color: var(--dark);
-  position: relative;
   border: 2px solid var(--light);
   border-radius: 10px;
+  padding: 24px;
+  max-width: 720px;
+  margin: 40px auto;
+  box-shadow: var(--box-shadow-first);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.thread-meta {
-  margin-top: 6px;
-  font-size: 0.8rem;
-  color: #555;
+.thread-header-detail {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--light);
+}
+
+.thread-main-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.thread-owner-detail {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar-detail {
+  width: 65px;
+  height: 65px;
+  border-radius:5px;
+  overflow: hidden;
+  border: 2px solid var(--light);
+}
+
+.thread-owner-detail h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--light);
+  margin: 0 0 4px;
+  line-height: 1.4;
+}
+
+.thread-meta-detail {
   display: flex;
   gap: 8px;
+  font-size: 12px;
+  color: var(--light);
+  opacity: 0.9;
+}
+
+.thread-meta-detail strong {
+  color: var(--light);
 }
 
 .btn-delete {
   background: transparent;
-  border: 1px solid var(--votedown);
-  color: var(--votedown);
-  padding: 6px 12px;
+  border: 1px solid var(--light);
+  color: var(--light);
+  padding: 6px 10px;
   border-radius: 8px;
-  font-size: 0.8rem;
+  font-size: 12px;
   cursor: pointer;
-  display: flex;
-  gap: 6px;
-  align-items: center;
   transition: all 0.2s ease;
 }
 
 .btn-delete:hover {
-  background: var(--votedown);
+  background: var(--light);
+  color: var(--accent);
+}
+
+.thread-body-detail {
+  font-size: 15px;
+  line-height: 1.8;
   color: var(--light);
+  white-space: pre-wrap;
 }
 
-.thread-body {
-  line-height: 1.75;
-  font-size: 0.95rem;
+/* styling konten HTML dari dangerouslySetInnerHTML */
+.thread-body-detail p {
+  margin-bottom: 14px;
 }
 
-.thread-body p {
-  margin-bottom: 0.8rem;
+.thread-body-detail a {
+  color: var(--info);
+  text-decoration: underline;
 }
 
-.vote-button {
+.thread-body-detail code {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.9em;
+}
+
+.thread-comments {
+  border-top: 1px solid var(--light);
+  padding-top: 20px;
   display: flex;
-  gap: 12px;
-  margin: 20px 0;
-}
-
-.vote-button button {
-  border: none;
-  background: var(--grey);
-  padding: 8px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.vote-button button.up {
-  background: var(--voteup);
-  color: var(--dark);
-}
-
-.vote-button button.down {
-  background: var(--votedown);
-  color: var(--light);
+  flex-direction: column;
+  gap: 16px;
 }
 
 .comment-list {
   list-style: none;
   padding: 0;
-  margin-top: 20px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .comment-item {
   display: flex;
   gap: 12px;
-  padding: 14px;
-  border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin-bottom: 12px;
-  transition: 0.2s ease;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--light);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.comment-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-}
-
-.avatar {
+.comment-item .avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid var(--light);
   flex-shrink: 0;
 }
 
 .comment-content {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--light);
 }
 
 .comment-content strong {
-  font-size: 0.95rem;
-  color: #222;
+  font-size: 13px;
+  color: var(--light);
 }
 
 .comment-content span {
-  font-size: 0.75rem;
-  color: #888;
-  margin-bottom: 6px;
+  font-size: 11px;
+  opacity: 0.8;
 }
 
 .comment-content p {
-  margin: 0;
-  color: #444;
-  line-height: 1.5;
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--light);
 }
 
 .comment-form {
   display: flex;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 16px;
 }
 
 .comment-form input {
   flex: 1;
-  padding: 12px 14px;
-  border-radius: 999px;
-  border: 1px solid #ddd;
-  outline: none;
-  transition: 0.2s;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--light);
+  background: transparent;
+  color: var(--light);
+}
+
+.comment-form input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .comment-form input:focus {
-  border-color: #4f46e5; 
-  box-shadow: 0 0 0 3px rgba(79,70,229,0.15);
+  outline: none;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .comment-form button {
+  background: var(--light);
+  color: var(--accent);
   border: none;
-  padding: 0 18px;
-  border-radius: 999px;
-  background: #4f46e5;
-  color: white;
+  padding: 0 14px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: 0.2s;
+  font-size: 14px;
+  transition: all 0.2s ease;
 }
 
 .comment-form button:hover {
-  background: #4338ca;
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .comment-login-hint {
-  margin-top: 16px;
-  padding: 16px;
-  border-radius: 12px;
-  background: #f7f7fb;
-  border: 1px dashed #ddd;
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px dashed var(--light);
   text-align: center;
+  color: var(--light);
 }
 
 .comment-login-hint p {
   margin-bottom: 8px;
-  color: #555;
+  font-size: 13px;
 }
 
 .comment-login-hint button {
+  background: var(--light);
+  color: var(--accent);
   border: none;
   padding: 8px 14px;
   border-radius: 8px;
-  background: #111827;
-  color: white;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-.comment-login-hint button:hover {
-  background: #000;
-}
 
 
 .thread-vote-section {

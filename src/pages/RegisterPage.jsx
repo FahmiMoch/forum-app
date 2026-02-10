@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import AuthForm from "../components/login/AuthForm";
+import AuthForm from "../components/auth/AuthForm";
 import useRegister from "../features/hooks/auth/useRegister";
 
 export default function RegisterPage() {

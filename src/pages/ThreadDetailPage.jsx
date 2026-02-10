@@ -15,7 +15,8 @@ export default function ThreadDetailPage() {
   const { threadDetail, loading, error } =
     useThreadDetailData(threadId);
 
-  const { token, requireLogin } = useAuthGuard();
+  // ⬇️ AMBIL loginModal JUGA
+  const { token, requireLogin, loginModal } = useAuthGuard();
 
   const {
     isOwner,
@@ -35,17 +36,22 @@ export default function ThreadDetailPage() {
   if (!threadDetail) return null;
 
   return (
-    <ThreadDetailContent
-      threadDetail={threadDetail}
-      threadId={threadId}
-      isOwner={isOwner}
-      isUpVoted={isUpVoted}
-      isDownVoted={isDownVoted}
-      token={token}
-      onVote={handleVote}
-      onDeleteThread={() => handleDeleteThread(navigate)}
-      onAddComment={handleAddComment}
-      onRequireLogin={requireLogin}
-    />
+    <>
+      {/* ⬅️ WAJIB RENDER MODAL DI SINI */}
+      {loginModal}
+
+      <ThreadDetailContent
+        threadDetail={threadDetail}
+        threadId={threadId}
+        isOwner={isOwner}
+        isUpVoted={isUpVoted}
+        isDownVoted={isDownVoted}
+        token={token}
+        onVote={handleVote}
+        onDeleteThread={() => handleDeleteThread(navigate)}
+        onAddComment={handleAddComment}
+        onRequireLogin={requireLogin}
+      />
+    </>
   );
 }

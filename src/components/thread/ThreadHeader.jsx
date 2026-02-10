@@ -18,15 +18,15 @@ function Avatar({ user }) {
 export default function ThreadHeader({ threadDetail, isOwner, onDelete }) {
   return (
     <div className="thread-header-detail">
-      <div className="thread-main">
-        <div className="thread-owner">
-          <div className="avatar">
+      <div className="thread-main-detail">
+        <div className="thread-owner-detail">
+          <div className="avatar-detail">
             <Avatar user={threadDetail.owner} />
           </div>
 
           <div>
             <h2>{threadDetail.title}</h2>
-            <div className="thread-meta">
+            <div className="thread-meta-detail">
               <span>
                 by <strong>{threadDetail.owner?.name}</strong>
               </span>

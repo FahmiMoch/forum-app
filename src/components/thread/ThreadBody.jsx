@@ -10,7 +10,7 @@ export default function ThreadBody({
   return (
     <>
       <div
-        className="thread-body"
+        className="thread-body-detail"
         dangerouslySetInnerHTML={{
           __html: threadDetail.body,
         }}
