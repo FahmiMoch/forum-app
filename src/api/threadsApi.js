@@ -1,18 +1,15 @@
 import apiClient from "./apiClient";
 
-// Ambil semua thread
 export const getAllThreads = async () => {
   const response = await apiClient.get("/threads");
   return response.data.data.threads;
 };
 
-// Ambil detail thread
 export const getThreadById = async (threadId) => {
   const response = await apiClient.get(`/threads/${threadId}`);
   return response.data.data.detailThread;
 };
 
-// Buat thread baru
 export const createThread = async ({ title, body, category }) => {
   const response = await apiClient.post("/threads", {
     title,
@@ -27,7 +24,6 @@ export const deleteThread = async (threadId) => {
   return response.data;
 };
 
-// Vote thread
 export const voteThread = async (threadId, voteType) => {
   const urlMap = {
     1: "up-vote",

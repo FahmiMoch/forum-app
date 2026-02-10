@@ -16,7 +16,7 @@ export default function VoteButton({
         onClick={() => onVote(isUpVoted ? 0 : 1)}
       >
         <FontAwesomeIcon icon={faChevronUp} />
-        <span>{upVotes}</span>
+        <span>Vote Up ({upVotes})</span>
       </button>
 
       <button
@@ -24,7 +24,7 @@ export default function VoteButton({
         onClick={() => onVote(isDownVoted ? 0 : -1)}
       >
         <FontAwesomeIcon icon={faChevronDown} />
-        <span>{downVotes}</span>
+        <span>Vote Down ({downVotes})</span>
       </button>
     </div>
   );

@@ -16,7 +16,7 @@ export const fetchThreads = createAsyncThunk(
   "threads/fetchThreads",
   async (_, { rejectWithValue }) => {
     try {
-      const threads = await getAllThreads(); // ⬅️ ARRAY LANGSUNG
+      const threads = await getAllThreads(); 
       return threads;
     } catch (error) {
       console.error("fetchThreads error:", error);
@@ -25,7 +25,6 @@ export const fetchThreads = createAsyncThunk(
   },
 );
 
-// ✅ GET THREAD DETAIL
 export const fetchThreadDetail = createAsyncThunk(
   "threads/fetchThreadDetail",
   async (threadId, { rejectWithValue }) => {
@@ -39,7 +38,6 @@ export const fetchThreadDetail = createAsyncThunk(
   },
 );
 
-// ✅ CREATE THREAD
 export const addThread = createAsyncThunk(
   "threads/addThread",
   async ({ title, body, category }, { rejectWithValue }) => {
@@ -53,7 +51,6 @@ export const addThread = createAsyncThunk(
   },
 );
 
-// ✅ DELETE THREAD
 export const deleteThreadAsync = createAsyncThunk(
   "threads/deleteThread",
   async (threadId, { rejectWithValue }) => {
@@ -67,7 +64,6 @@ export const deleteThreadAsync = createAsyncThunk(
   },
 );
 
-// ✅ VOTE THREAD
 export const voteOnThread = createAsyncThunk(
   "threads/voteOnThread",
   async ({ threadId, voteType }, { getState, rejectWithValue }) => {
@@ -84,10 +80,6 @@ export const voteOnThread = createAsyncThunk(
   },
 );
 
-/* =====================
-   HELPERS
-===================== */
-
 const applyVote = (thread, userId, voteType) => {
   if (!thread) return;
 
@@ -97,10 +89,6 @@ const applyVote = (thread, userId, voteType) => {
   if (voteType === 1) thread.upVotesBy.push(userId);
   if (voteType === -1) thread.downVotesBy.push(userId);
 };
-
-/* =====================
-   SLICE
-===================== */
 
 const threadsSlice = createSlice({
   name: "threads",
@@ -120,8 +108,6 @@ const threadsSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-
-      /* FETCH THREADS */
       .addCase(fetchThreads.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -140,7 +126,6 @@ const threadsSlice = createSlice({
         state.error = action.payload;
       })
 
-      /* FETCH THREAD DETAIL */
       .addCase(fetchThreadDetail.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -154,7 +139,6 @@ const threadsSlice = createSlice({
         state.error = action.payload;
       })
 
-      /* ADD THREAD */
       .addCase(addThread.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -171,12 +155,10 @@ const threadsSlice = createSlice({
         state.error = action.payload;
       })
 
-      /* DELETE THREAD */
       .addCase(deleteThreadAsync.fulfilled, (state, action) => {
         state.threads = state.threads.filter((t) => t.id !== action.payload);
       })
 
-      /* VOTE THREAD */
       .addCase(voteOnThread.fulfilled, (state, action) => {
         const { threadId, voteType, userId } = action.payload;
 

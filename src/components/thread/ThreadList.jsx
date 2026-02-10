@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { formatDate } from "../utils/FormatDate";
-import Loading from "./Loading";
-import ThreadError from "./Error";
+import { formatDate } from "../../utils/FormatDate";
+import Loading from "../loading/Loading";
+import ThreadError from "../error/Error";
 
 export default function ThreadList({ threads, usersById, loading, error }) {
   if (loading) {

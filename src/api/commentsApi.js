@@ -1,8 +1,5 @@
 import apiClient from "./apiClient";
 
-/**
- * Buat komentar baru
- */
 export const createComment = async (threadId, content) => {
   const response = await apiClient.post(`/threads/${threadId}/comments`, {
     content,
@@ -10,9 +7,6 @@ export const createComment = async (threadId, content) => {
   return response.data.data.comment;
 };
 
-/**
- * Vote comment
- */
 export const voteComment = async (threadId, commentId, voteType) => {
   const urlMap = {
     1: "up-vote",

@@ -1,5 +1,5 @@
 import React from "react";
-import Loading from "./Loading";
+import Loading from "../loading/Loading";
 
 export default function CategoryList({
   categories = [],

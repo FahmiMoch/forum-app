@@ -6,7 +6,7 @@ export const login = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await loginUser({ email, password });
-      return response.data; // { token }
+      return response.data; 
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || "Login failed");
     }
@@ -45,8 +45,8 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     token: localStorage.getItem("token"),
-    loading: false, // login/register loading
-    isAuthLoading: true, // ⬅️ auth bootstrap
+    loading: false, 
+    isAuthLoading: true, 
     error: null,
   },
 
@@ -54,7 +54,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
-      state.isAuthLoading = false; // ✅ FIX
+      state.isAuthLoading = false; 
       localStorage.removeItem("token");
     },
 
@@ -65,7 +65,6 @@ const authSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      // ===== LOGIN =====
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -73,16 +72,15 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
         state.token = action.payload.token;
-        state.isAuthLoading = false; // ✅ FIX PENTING
+        state.isAuthLoading = false; 
         localStorage.setItem("token", state.token);
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        state.isAuthLoading = false; // ✅ safety
+        state.isAuthLoading = false; 
       })
 
-      // ===== REGISTER =====
       .addCase(register.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -95,7 +93,6 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
-      // ===== FETCH ME =====
       .addCase(fetchMe.pending, (state) => {
         state.isAuthLoading = true;
       })

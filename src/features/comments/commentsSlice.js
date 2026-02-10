@@ -1,17 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createComment, voteComment } from "../../api/commentsApi";
 
-/* =====================
-   CONSTANTS
-===================== */
 const VOTE_UP = 1;
 const VOTE_DOWN = -1;
 
-/* =====================
-   ASYNC THUNKS
-===================== */
 
-// Add comment (auth)
 export const addComment = createAsyncThunk(
   "comments/addComment",
   async ({ threadId, content }, { rejectWithValue }) => {
@@ -26,7 +19,6 @@ export const addComment = createAsyncThunk(
   },
 );
 
-// Vote comment (auth)
 export const voteOnComment = createAsyncThunk(
   "comments/voteOnComment",
   async ({ threadId, commentId, voteType, userId }, { rejectWithValue }) => {
@@ -41,17 +33,12 @@ export const voteOnComment = createAsyncThunk(
   },
 );
 
-/* =====================
-   HELPERS
-===================== */
 const applyVoteToComment = (comment, userId, voteType) => {
   if (!comment || !userId) return;
 
-  // remove previous vote
   comment.upVotesBy = comment.upVotesBy.filter((id) => id !== userId);
   comment.downVotesBy = comment.downVotesBy.filter((id) => id !== userId);
 
-  // apply new vote
   if (voteType === VOTE_UP) {
     comment.upVotesBy.push(userId);
   }
@@ -61,9 +48,6 @@ const applyVoteToComment = (comment, userId, voteType) => {
   }
 };
 
-/* =====================
-   SLICE
-===================== */
 const commentsSlice = createSlice({
   name: "comments",
 
@@ -85,7 +69,6 @@ const commentsSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      /* ===== ADD COMMENT ===== */
       .addCase(addComment.pending, (state) => {
         state.loadingAdd = true;
         state.errorAdd = null;
@@ -106,7 +89,6 @@ const commentsSlice = createSlice({
         state.errorAdd = action.payload;
       })
 
-      /* ===== VOTE COMMENT ===== */
       .addCase(voteOnComment.pending, (state) => {
         state.loadingVote = true;
         state.errorVote = null;
