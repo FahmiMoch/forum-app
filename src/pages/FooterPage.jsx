@@ -11,7 +11,7 @@ export default function FooterPage() {
       </div>
       <div className="footer-center">
           <a
-            href="https://www.linkedin.com/in/USERNAME"
+            href="https://www.linkedin.com/in/mochamad-fahmi-fadillah-83b524334"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
@@ -20,7 +20,7 @@ export default function FooterPage() {
           </a>
 
           <a
-            href="https://github.com/USERNAME"
+            href="https://github.com/FahmiMoch"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"

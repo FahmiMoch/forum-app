@@ -27,10 +27,10 @@
   display: none;
 }
 
-
 .leaderboard-item:hover {
-  background: #f9fafb;
-  transform: translateY(-1px);
+  background: var(--dark);
+  border: 1px solid var(--light);
+  transform: translateY(-2px);
 }
 
 .leaderboard-item.top-rank .rank {

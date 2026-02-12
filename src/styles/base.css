@@ -1,11 +1,8 @@
 /* Global + Theme */
 :root {
+   --accent: #3b82f6;
   --primary: #00a9ff;
-  --secondary: #89cff3;
-  --info: #a0e9ff;
-  --pale-blue: #cdf5fd;
   --light: #fff;
-  --accent: #3b82f6;
   --vivid-sky: #00a9ff80;
   --dark: #000;
   --grey: #ddd;
@@ -43,7 +40,8 @@
 }
 
 [data-theme="dark"] {
-  --dark-one: #1e1e1e;
+  --accent: #000;
+  --primary: #000;
   --dark-two: #2c2c2c;
   --dark-three: #3a3a3a;
   --dark-four: #444;
@@ -99,15 +97,6 @@
   background: var(--dark);
 }
 
-[data-theme="dark"] .forum-left,
-[data-theme="dark"] .forum-right {
-  background: var(--dark);
-}
-
-[data-theme="dark"] .forum-right li.active {
-  color: var(--dark);
-}
-
 [data-theme="dark"] .thread-card {
   background: var(--dark);
 }
@@ -126,7 +115,7 @@
 html,
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background: var(--gradient-bottom);
+  background: var(--accent);
   color: var(--light);
 }
 

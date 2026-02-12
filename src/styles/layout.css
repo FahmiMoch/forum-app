@@ -12,7 +12,7 @@
   color: var(--light);
   position: sticky;
   z-index: 100;
-  box-shadow: var(--box-shadow-first);
+  border-bottom: 2px solid var(--light);
 }
 
 [data-theme="dark"] .navbar {
@@ -271,8 +271,8 @@ position: sticky;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  border-bottom: 2px solid var(--light);
+  border-radius: 5px;
+  border: 2px solid var(--light);
 }
 
 .forum-right ul {
@@ -347,7 +347,6 @@ position: sticky;
   background: var(--primary);
   height: 2px; 
 }
-
 
 .thread-list {
   list-style: none;
@@ -425,14 +424,24 @@ position: sticky;
 
 .thread-meta {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   font-size: 12px;
-  color: var(--light);
   margin-top: 10px;
-  background: var(--accent);
-  border-radius: 10px;
 }
+
+/* tiap item jadi kotak sendiri */
+.thread-meta span {
+  display: inline-flex;        /* ini penting */
+  align-items: center;
+  background: var(--accent);
+  color: var(--light);
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 2px solid var(--light);
+  white-space: nowrap;         /* biar nggak turun baris */
+}
+
 
 
 /* Thread Detail Page */
@@ -444,15 +453,21 @@ position: sticky;
   max-width: 720px;
   margin: 40px auto;
   box-shadow: var(--box-shadow-first);
+
   display: flex;
   flex-direction: column;
   gap: 24px;
+align-items: stretch;
+  min-height: 700px; /* atur sesuai kebutuhan */
 }
 
+
 .thread-header-detail {
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--light);
+  margin: 0 -24px;
+  padding: 0 24px 16px;
+  border-bottom: 2px solid var(--light);
 }
+
 
 .thread-main-detail {
   display: flex;
@@ -659,8 +674,6 @@ position: sticky;
   cursor: pointer;
 }
 
-
-
 .thread-vote-section {
   display: flex;
   gap: 12px;
@@ -714,4 +727,111 @@ position: sticky;
 
 .vote-btn svg {
   font-size: 0.85rem;
+}
+
+/* Animated gradient background */
+.loading-wrapper {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  background-size: 300% 300%;
+  animation: gradientMove 8s ease infinite;
+  z-index: 9999;
+}
+
+/* Glass card */
+.loading-box {
+  background: var(--primary);
+  backdrop-filter: blur(5px);
+  padding: 50px 60px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 169, 255, 0.3);
+  animation: fadeScale 0.5s ease;
+}
+
+/* Outer ring */
+.ring {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 255, 255, 0.4);
+  border-top: 4px solid white;
+  margin: 0 auto 25px;
+  animation: spin 1s linear infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Inner pulse circle */
+.ring-inner {
+  width: 25px;
+  height: 25px;
+  background: white;
+  border-radius: 50%;
+  animation: pulse 1.5s ease infinite;
+}
+
+/* Text */
+.loading-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 1px;
+}
+
+.loading-subtitle {
+  margin-top: 8px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Animations */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

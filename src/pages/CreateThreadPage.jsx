@@ -1,7 +1,7 @@
 import useRequireAuth from "../features/hooks/auth/useRequireAuth";
 import useCreateThread from "../features/hooks/thread/useCreateThread";
 import CreateThreadForm from "../components/thread/CreateThreadForm";
-
+import Loading from "../components/loading/Loading";
 export default function CreateThreadPage() {
   useRequireAuth();
 
@@ -15,6 +15,8 @@ export default function CreateThreadPage() {
     setBody,
     handleSubmit,
   } = useCreateThread();
+
+   if (loading) return <Loading />;
 
   return (
     <CreateThreadForm
