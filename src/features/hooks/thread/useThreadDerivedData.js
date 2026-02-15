@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo } from 'react';
 
 export default function useThreadDerivedData(
   threads,
@@ -14,13 +14,13 @@ export default function useThreadDerivedData(
   }, [users]);
 
   const categories = useMemo(() => {
-    if (!Array.isArray(threads)) return ["All"];
-    return ["All", ...new Set(threads.map((t) => t.category || "General"))];
+    if (!Array.isArray(threads)) return ['All'];
+    return ['All', ...new Set(threads.map((t) => t.category || 'General'))];
   }, [threads]);
 
   const filteredThreads = useMemo(() => {
     if (!Array.isArray(threads)) return [];
-    if (categoryFilter === "All") return threads;
+    if (categoryFilter === 'All') return threads;
     return threads.filter((t) => t.category === categoryFilter);
   }, [threads, categoryFilter]);
 

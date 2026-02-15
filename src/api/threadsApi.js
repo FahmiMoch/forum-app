@@ -1,7 +1,7 @@
-import apiClient from "./apiClient";
+import apiClient from './apiClient';
 
 export const getAllThreads = async () => {
-  const response = await apiClient.get("/threads");
+  const response = await apiClient.get('/threads');
   return response.data.data.threads;
 };
 
@@ -11,7 +11,7 @@ export const getThreadById = async (threadId) => {
 };
 
 export const createThread = async ({ title, body, category }) => {
-  const response = await apiClient.post("/threads", {
+  const response = await apiClient.post('/threads', {
     title,
     body,
     category,
@@ -26,9 +26,9 @@ export const deleteThread = async (threadId) => {
 
 export const voteThread = async (threadId, voteType) => {
   const urlMap = {
-    1: "up-vote",
-    0: "neutral-vote",
-    "-1": "down-vote",
+    1: 'up-vote',
+    0: 'neutral-vote',
+    '-1': 'down-vote',
   };
 
   const response = await apiClient.post(

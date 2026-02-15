@@ -1,19 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import FooterLoading from "../components/loading/FooterLoading";
 
-export default function FooterPage({ loading }) {
+export default function FooterPage() {
   const navigate = useNavigate();
-
-  if (loading) {
-    return <FooterLoading />;
-  }
 
   return (
     <footer className="footer">
-      <div className="footer-right">
-        <span>© {new Date().getFullYear()} Made by Fahmi</span>
+      <div className="footer-left">
+        <span
+          className="footer-logo"
+          onClick={() => navigate("/")}
+          role="button"
+        >
+          <i className="fas fa-comments"></i>
+          <span>ForumApp</span>
+        </span>
       </div>
+
       <div className="footer-center">
         <a
           href="https://www.linkedin.com/in/mochamad-fahmi-fadillah-83b524334"
@@ -23,6 +26,7 @@ export default function FooterPage({ loading }) {
         >
           <i className="fa-brands fa-linkedin-in"></i>
         </a>
+
         <a
           href="https://github.com/FahmiMoch"
           target="_blank"
@@ -33,9 +37,9 @@ export default function FooterPage({ loading }) {
         </a>
       </div>
 
-      <div className="footer-left">
-        <span className="footer-logo" onClick={() => navigate("/")}>
-          <i className="fas fa-comments"></i> ForumApp
+      <div className="footer-right">
+        <span className="footer-made">
+          © {new Date().getFullYear()} Made by Fahmi
         </span>
       </div>
     </footer>

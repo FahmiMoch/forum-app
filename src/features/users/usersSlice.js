@@ -1,22 +1,22 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getAllUsers } from "../../api/usersApi";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getAllUsers } from '../../api/usersApi';
 
 export const fetchUsers = createAsyncThunk(
-  "users/fetchUsers",
+  'users/fetchUsers',
   async (_, { rejectWithValue }) => {
     try {
       const users = await getAllUsers();
       return users;
     } catch (error) {
-      return rejectWithValue("Fetch users failed");
+      return rejectWithValue('Fetch users failed');
     }
   },
 );
 
 const usersSlice = createSlice({
-  name: "users",
+  name: 'users',
   initialState: {
-    users: [], 
+    users: [],
     loading: false,
     error: null,
   },

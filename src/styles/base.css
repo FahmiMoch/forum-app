@@ -118,10 +118,17 @@
 
 html,
 body {
+  height: 100%;
+  margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   background: var(--accent);
   color: var(--light);
 }
+
+#root {
+  height: 100%;
+}
+
 
 
 

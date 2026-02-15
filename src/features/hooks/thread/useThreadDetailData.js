@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchThreadDetail,
   clearThreadDetail,
-} from "../../thread/threadsSlice";
+} from '../../thread/threadsSlice';
 
 export default function useThreadDetailData(threadId) {
   const dispatch = useDispatch();

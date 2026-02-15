@@ -1,33 +1,33 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createComment, voteComment } from "../../api/commentsApi";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createComment, voteComment } from '../../api/commentsApi';
 
 const VOTE_UP = 1;
 const VOTE_DOWN = -1;
 
 
 export const addComment = createAsyncThunk(
-  "comments/addComment",
+  'comments/addComment',
   async ({ threadId, content }, { rejectWithValue }) => {
     try {
       const response = await createComment(threadId, content);
       return { threadId, comment: response.data.comment };
     } catch (err) {
       return rejectWithValue(
-        err.response?.data?.message || "Failed to add comment",
+        err.response?.data?.message || 'Failed to add comment',
       );
     }
   },
 );
 
 export const voteOnComment = createAsyncThunk(
-  "comments/voteOnComment",
+  'comments/voteOnComment',
   async ({ threadId, commentId, voteType, userId }, { rejectWithValue }) => {
     try {
       await voteComment(threadId, commentId, voteType);
       return { threadId, commentId, voteType, userId };
     } catch (err) {
       return rejectWithValue(
-        err.response?.data?.message || "Failed to vote comment",
+        err.response?.data?.message || 'Failed to vote comment',
       );
     }
   },
@@ -49,7 +49,7 @@ const applyVoteToComment = (comment, userId, voteType) => {
 };
 
 const commentsSlice = createSlice({
-  name: "comments",
+  name: 'comments',
 
   initialState: {
     commentsByThread: {},

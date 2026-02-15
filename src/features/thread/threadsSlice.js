@@ -1,76 +1,76 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   getAllThreads,
   getThreadById,
   createThread,
   voteThread,
   deleteThread,
-} from "../../api/threadsApi";
+} from '../../api/threadsApi';
 
 export const fetchThreads = createAsyncThunk(
-  "threads/fetchThreads",
+  'threads/fetchThreads',
   async (_, { rejectWithValue }) => {
     try {
-      const threads = await getAllThreads(); 
+      const threads = await getAllThreads();
       return threads;
     } catch (error) {
-      console.error("fetchThreads error:", error);
-      return rejectWithValue("Failed to fetch threads");
+      console.error('fetchThreads error:', error);
+      return rejectWithValue('Failed to fetch threads');
     }
   },
 );
 
 export const fetchThreadDetail = createAsyncThunk(
-  "threads/fetchThreadDetail",
+  'threads/fetchThreadDetail',
   async (threadId, { rejectWithValue }) => {
     try {
       const detailThread = await getThreadById(threadId);
       return detailThread;
     } catch (error) {
-      console.error("fetchThreadDetail error:", error);
-      return rejectWithValue("Failed to fetch thread detail");
+      console.error('fetchThreadDetail error:', error);
+      return rejectWithValue('Failed to fetch thread detail');
     }
   },
 );
 
 export const addThread = createAsyncThunk(
-  "threads/addThread",
+  'threads/addThread',
   async ({ title, body, category }, { rejectWithValue }) => {
     try {
       const thread = await createThread({ title, body, category });
       return thread;
     } catch (error) {
-      console.error("addThread error:", error);
-      return rejectWithValue("Failed to create thread");
+      console.error('addThread error:', error);
+      return rejectWithValue('Failed to create thread');
     }
   },
 );
 
 export const deleteThreadAsync = createAsyncThunk(
-  "threads/deleteThread",
+  'threads/deleteThread',
   async (threadId, { rejectWithValue }) => {
     try {
       await deleteThread(threadId);
       return threadId;
     } catch (error) {
-      console.error("deleteThread error:", error);
-      return rejectWithValue("Failed to delete thread");
+      console.error('deleteThread error:', error);
+      return rejectWithValue('Failed to delete thread');
     }
   },
 );
 
 export const voteOnThread = createAsyncThunk(
-  "threads/voteOnThread",
+  'threads/voteOnThread',
   async ({ threadId, voteType }, { getState, rejectWithValue }) => {
     const user = getState().auth.user;
-    if (!user) return rejectWithValue("Unauthorized");
+    if (!user) return rejectWithValue('Unauthorized');
 
     try {
       await voteThread(threadId, voteType);
       return { threadId, voteType, userId: user.id };
     } catch (error) {
-      console.error("voteThread error:", error);
-      return rejectWithValue("Failed to vote");
+      console.error('voteThread error:', error);
+      return rejectWithValue('Failed to vote');
     }
   },
 );
@@ -86,7 +86,7 @@ const applyVote = (thread, userId, voteType) => {
 };
 
 const threadsSlice = createSlice({
-  name: "threads",
+  name: 'threads',
 
   initialState: {
     threads: [],

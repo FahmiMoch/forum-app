@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { getLeaderboards } from "../../../api/leaderboardApi";
+import { useEffect, useState } from 'react';
+import { getLeaderboards } from '../../../api/leaderboardApi';
 
 export default function useLeaderboards() {
   const [leaderboards, setLeaderboards] = useState([]);
@@ -15,7 +15,7 @@ export default function useLeaderboards() {
         );
         setLeaderboards(sorted);
       } catch (err) {
-        setError(err.message || "Failed to fetch leaderboards");
+        setError(err.message || 'Failed to fetch leaderboards');
       } finally {
         setLoading(false);
       }

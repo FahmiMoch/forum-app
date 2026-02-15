@@ -244,18 +244,21 @@
 }
 
 .forum-layout {
-  height: auto;
+  flex: 1;                 /* isi sisa ruang dari .content */
   margin: 0 auto;
   padding: 24px 16px;
+   min-height: calc(100vh - 140px);
   display: grid;
   grid-template-columns: 280px 1fr 260px;
-  grid-template-rows: auto 1fr;
   column-gap: 32px;
   row-gap: 16px;
+
   align-items: start;
+
   width: 100%;
   max-width: 1200px;
 }
+
 
 .forum-left,
 .forum-center,
@@ -481,11 +484,10 @@
   max-width: 720px;
   margin: 40px auto;
   box-shadow: var(--box-shadow-first);
-
   display: flex;
   flex-direction: column;
   gap: 24px;
-align-items: stretch;
+  align-items: stretch;
   min-height: 700px; 
 }
 
@@ -850,4 +852,9 @@ align-items: stretch;
   opacity: 0.85;
   transform: translateY(-2px);
 }
+
+
+
+
+
 

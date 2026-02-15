@@ -1,22 +1,22 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getLeaderboards } from "../../api/leaderboardApi";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getLeaderboards } from '../../api/leaderboardApi';
 
 export const fetchLeaderboards = createAsyncThunk(
-  "leaderboard/fetchLeaderboards",
+  'leaderboard/fetchLeaderboards',
   async (_, { rejectWithValue }) => {
     try {
       const data = await getLeaderboards();
       return data;
     } catch (err) {
       return rejectWithValue(
-        err.response?.data || "Failed to fetch leaderboard",
+        err.response?.data || 'Failed to fetch leaderboard',
       );
     }
   },
 );
 
 const leaderboardSlice = createSlice({
-  name: "leaderboard",
+  name: 'leaderboard',
   initialState: {
     users: [],
     loading: false,

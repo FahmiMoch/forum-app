@@ -1,10 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useMemo } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { useMemo } from 'react';
 import {
   deleteThreadAsync,
   voteOnThread,
-} from "../../thread/threadsSlice";
-import { addComment } from "../../comments/commentsSlice";
+} from '../../thread/threadsSlice';
+import { addComment } from '../../comments/commentsSlice';
 
 export default function useThreadDetailActions(
   threadDetail,
@@ -51,9 +51,9 @@ export default function useThreadDetailActions(
   };
 
   const handleDeleteThread = async (navigate) => {
-    if (!window.confirm("Hapus thread ini?")) return;
+    if (!window.confirm('Hapus thread ini?')) return;
     await dispatch(deleteThreadAsync(threadId));
-    navigate("/");
+    navigate('/');
   };
 
   return {

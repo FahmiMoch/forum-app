@@ -19,24 +19,30 @@ import ProtectedRoute from "./ProtectedRoute";
 export default function AppRoutes() {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<ThreadsPage />} />
-        <Route path="/threads/:threadId" element={<ThreadDetailPage />} />
-        <Route path="/leaderboard" element={<LeaderboardPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route
-          path="/threads/create"
-          element={
-            <ProtectedRoute>
-              <CreateThreadPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-      <FooterPage />
+      <div className="layout">
+        <Navbar />
+
+        <main className="content">
+          <Routes>
+            <Route path="/" element={<ThreadsPage />} />
+            <Route path="/threads/:threadId" element={<ThreadDetailPage />} />
+            <Route path="/leaderboard" element={<LeaderboardPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route
+              path="/threads/create"
+              element={
+                <ProtectedRoute>
+                  <CreateThreadPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+
+        <FooterPage />
+      </div>
     </Router>
   );
 }

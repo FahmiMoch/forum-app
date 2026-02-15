@@ -5,8 +5,8 @@ export function formatDate(dateString) {
   const diffMs = now - date;
   const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-  if (days <= 0) return "hari ini";
-  if (days === 1) return "1 hari yang lalu";
+  if (days <= 0) return 'hari ini';
+  if (days === 1) return '1 hari yang lalu';
 
   return `${days} hari yang lalu`;
 }
