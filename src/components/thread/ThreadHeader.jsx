@@ -1,6 +1,4 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { formatDate } from "../../utils/FormatDate";
 
 function Avatar({ user }) {
@@ -34,12 +32,6 @@ export default function ThreadHeader({ threadDetail, isOwner, onDelete }) {
             </div>
           </div>
         </div>
-
-        {isOwner && (
-          <button className="btn-delete" onClick={onDelete}>
-            <FontAwesomeIcon icon={faTrash} /> Hapus
-          </button>
-        )}
       </div>
     </div>
   );

@@ -11,32 +11,32 @@ export default function CreateThreadForm({
   return (
     <div className="create-thread-page">
       <div className="create-thread-card">
-        <h2>Create New Thread</h2>
+        <h2>Membuat Thread Baru</h2>
 
         <form onSubmit={onSubmit}>
           <input
             value={title}
             onChange={onTitleChange}
-            placeholder="Judul thread"
+            placeholder="Masukkan Judul Thread"
             required
           />
 
           <input
             value={category}
             onChange={onCategoryChange}
-            placeholder="Kategori (opsional)"
+            placeholder="Masukkan Kategori"
           />
 
           <textarea
             value={body}
             onChange={onBodyChange}
             rows={6}
-            placeholder="Isi thread"
+            placeholder="Tulis isi thread"
             required
           />
 
           <button disabled={loading}>
-            {loading ? "Posting..." : "Post Thread"}
+            {loading ? "Send..." : "Kirim"}
           </button>
         </form>
       </div>

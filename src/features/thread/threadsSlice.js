@@ -7,11 +7,6 @@ import {
   deleteThread,
 } from "../../api/threadsApi";
 
-/* =====================
-   ASYNC THUNKS
-===================== */
-
-// ✅ GET ALL THREADS
 export const fetchThreads = createAsyncThunk(
   "threads/fetchThreads",
   async (_, { rejectWithValue }) => {

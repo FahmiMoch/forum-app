@@ -16,27 +16,27 @@ export default function RegisterPage() {
 
   return (
     <AuthForm
-      title="Register"
+      title="Daftar"
       onSubmit={handleSubmit}
       buttonText={loading ? "Registering..." : "Register"}
       inputs={[
         {
           type: "text",
-          placeholder: "Name",
+          placeholder: "Masukkan Nama",
           value: name,
           onChange: (e) => setName(e.target.value),
           required: true,
         },
         {
           type: "email",
-          placeholder: "Email",
+          placeholder: "Masukkan Email",
           value: email,
           onChange: (e) => setEmail(e.target.value),
           required: true,
         },
         {
           type: "password",
-          placeholder: "Password (min 6 karakter)",
+          placeholder: "Masukkan Password",
           value: password,
           onChange: (e) => setPassword(e.target.value),
           minLength: 6,

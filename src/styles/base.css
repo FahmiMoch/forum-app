@@ -81,6 +81,11 @@
   color: var(--light);
 }
 
+[data-theme="dark"] .navbar {
+  background: var(--dark);
+  color: var(--light);
+}
+
 [data-theme="dark"] .theme-toggle i {
   color: #e5e7eb;
 }
@@ -109,7 +114,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  max-height: 1500px;
 }
 
 html,

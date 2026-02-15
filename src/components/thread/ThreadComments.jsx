@@ -25,21 +25,25 @@ export default function ThreadComments({
     <>
       <h4>Komentar</h4>
 
-      <ul className="comment-list">
-        {comments.map((c) => (
-          <li key={c.id} className="comment-item">
-            <div className="avatar">
-              <Avatar user={c.owner} />
-            </div>
+   <ul className="comment-list">
+  {comments.map((c) => (
+    <li key={c.id} className="comment-item">
+      <div className="avatar">
+        <Avatar user={c.owner} />
+      </div>
 
-            <div className="comment-content">
-              <strong>{c.owner?.name}</strong>
-              <span>{formatDate(c.createdAt)}</span>
-              <p>{c.content}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <div className="comment-content">
+        <strong>{c.owner?.name}</strong>
+        <span>{formatDate(c.createdAt)}</span>
+
+        <p>
+          {c.content.replace(/<br\s*\/?>/gi, "\n")}
+        </p>
+      </div>
+    </li>
+  ))}
+</ul>
+
 
       {token ? (
         <form className="comment-form" onSubmit={onAddComment}>

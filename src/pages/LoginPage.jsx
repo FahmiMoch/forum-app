@@ -12,20 +12,20 @@ export default function LoginPage() {
 
   return (
     <AuthForm
-      title="Login"
+      title="Masuk"
       onSubmit={handleSubmit}
       buttonText="Login"
       inputs={[
         {
           type: "email",
-          placeholder: "Email",
+          placeholder: "Masukkan Email",
           value: email,
           onChange: (e) => setEmail(e.target.value),
           required: true,
         },
         {
           type: "password",
-          placeholder: "Password",
+          placeholder: "Masukkan Password",
           value: password,
           onChange: (e) => setPassword(e.target.value),
           required: true,

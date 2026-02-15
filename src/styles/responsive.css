@@ -1,0 +1,295 @@
+@media (max-width: 768px) {
+/* ===== BASE STYLES ===== */
+html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--accent);
+  color: var(--light);
+  height: 100%;
+  min-height: 250vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== SMALL MOBILE ===== */
+@media (max-width: 480px) {
+  html,
+  body {
+    font-size: 13px;
+    min-height: 260vh;
+  }
+}
+
+  .navbar {
+    padding: 0 16px;
+    height: 60px;
+  }
+
+  .navbar-logo {
+    font-size: 18px;
+    gap: 8px;
+  }
+
+  .navbar-logo i {
+    font-size: 20px;
+  }
+
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .navbar-action {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0 12px;
+    height: 56px;
+  }
+
+  .navbar-logo span {
+    font-size: 16px;
+  }
+
+  .navbar-logo i {
+    font-size: 18px;
+  }
+
+  .navbar-action {
+    gap: 8px;
+  }
+
+  .icon-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .dropdown-menu {
+    width: 160px;
+    right: 0;
+  }
+.create-thread-page {
+  min-height: 100vh;
+}
+}
+
+
+@media (max-width: 768px) {
+  .leaderboard-item {
+    grid-template-columns: 20px 36px 1fr auto;
+    gap: 10px;
+    padding: 12px 8px;
+  }
+
+  .avatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .name {
+    font-size: 11px;
+  }
+
+  .score {
+    width: 28px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 768px) {
+  .forum-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 600px;
+    min-height: 1600px;
+  }
+
+  .forum-left {
+    grid-column: 1;
+    grid-row: 1;
+    position: static;
+  }
+
+  .forum-center {
+    grid-column: 1;
+    grid-row: 2;
+    height: auto;
+    position: static;
+  }
+
+  .forum-right {
+    grid-column: 1;
+    grid-row: 3;
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .thread-detail {
+    margin: 20px 12px;
+    padding: 16px;
+    min-height: 700px;
+    gap: 18px;
+  }
+
+  .thread-header-detail {
+    margin: 0 -16px;
+    padding: 0 16px 14px;
+  }
+
+  .thread-main-detail {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .thread-owner-detail {
+    align-items: flex-start;
+  }
+
+  .avatar-detail {
+    width: 68px;
+    height: 65px;
+  }
+
+  .thread-owner-detail h2 {
+    font-size: 16px;
+  }
+
+  .thread-meta-detail {
+    flex-wrap: wrap;
+    font-size: 11px;
+  }
+
+  .thread-body-detail {
+    font-size: 14px;
+  }
+
+  .comment-item {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .comment-item .avatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  .comment-form {
+    flex-direction: column;
+  }
+
+  .comment-form button {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .thread-vote-section {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .vote-btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 0.85rem;
+  }
+
+}
+
+@media (max-width: 480px) {
+  .login-modal {
+    margin: 0 14px;
+    padding: 22px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    margin-top: 300px;
+  }
+}
+
+@keyframes modalFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+

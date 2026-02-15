@@ -14,8 +14,6 @@ export default function ThreadDetailPage() {
 
   const { threadDetail, loading, error } =
     useThreadDetailData(threadId);
-
-  // ⬇️ AMBIL loginModal JUGA
   const { token, requireLogin, loginModal } = useAuthGuard();
 
   const {
@@ -37,7 +35,6 @@ export default function ThreadDetailPage() {
 
   return (
     <>
-      {/* ⬅️ WAJIB RENDER MODAL DI SINI */}
       {loginModal}
 
       <ThreadDetailContent

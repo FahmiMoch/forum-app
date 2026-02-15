@@ -1,39 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../features/auth/authSlice";
 
 export default function Navbar() {
-  const { token } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [openDropdown, setOpenDropdown] = useState(false);
+  const dropdownRef = useRef();
 
   useEffect(() => {
     document.body.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpenDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
   const handleCreateThread = () => {
-    if (!token) {
-      navigate("/login");
-    } else {
-      navigate("/threads/create");
-    }
+    if (!token) navigate("/login");
+    else navigate("/threads/create");
   };
 
-  const handleUserClick = () => {
-    if (!token) {
-      navigate("/login");
-    } else {
-      dispatch(logout());
-      navigate("/");
-    }
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
   };
 
   return (
@@ -52,17 +57,34 @@ export default function Navbar() {
           <i className="fas fa-plus"></i>
         </button>
 
-        <button className="icon-btn" onClick={toggleTheme} title="Toggle theme">
+        <button className="icon-btn" onClick={toggleTheme}>
           <i className={`fas ${theme === "light" ? "fa-moon" : "fa-sun"}`} />
         </button>
 
-        <button
-          className="icon-btn"
-          onClick={handleUserClick}
-          title={token ? "Logout" : "Login"}
-        >
-          <i className="fas fa-user-circle"></i>
-        </button>
+        <div className="user-menu" ref={dropdownRef}>
+          <button
+            className="icon-btn"
+            onClick={() =>
+              token ? setOpenDropdown(!openDropdown) : navigate("/login")
+            }
+          >
+            <i className="fas fa-user-circle"></i>
+          </button>
+
+          {token && openDropdown && (
+            <div className="dropdown-menu">
+              <div className="dropdown-user">
+                <i className="fas fa-user"></i>
+                <span>{user?.name}</span>
+              </div>
+
+              <button className="dropdown-item" onClick={handleLogout}>
+                <i className="fas fa-sign-out-alt"></i>
+                Keluar
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   );
