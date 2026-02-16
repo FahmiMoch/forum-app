@@ -7,6 +7,10 @@ import {
   deleteThread,
 } from '../../api/threadsApi';
 
+/* =========================
+   ASYNC THUNKS
+========================= */
+
 export const fetchThreads = createAsyncThunk(
   'threads/fetchThreads',
   async (_, { rejectWithValue }) => {
@@ -14,10 +18,11 @@ export const fetchThreads = createAsyncThunk(
       const threads = await getAllThreads();
       return threads;
     } catch (error) {
-      console.error('fetchThreads error:', error);
-      return rejectWithValue('Failed to fetch threads');
+      return rejectWithValue(
+        error.response?.data?.message || 'Failed to fetch threads'
+      );
     }
-  },
+  }
 );
 
 export const fetchThreadDetail = createAsyncThunk(
@@ -27,10 +32,11 @@ export const fetchThreadDetail = createAsyncThunk(
       const detailThread = await getThreadById(threadId);
       return detailThread;
     } catch (error) {
-      console.error('fetchThreadDetail error:', error);
-      return rejectWithValue('Failed to fetch thread detail');
+      return rejectWithValue(
+        error.response?.data?.message || 'Failed to fetch thread detail'
+      );
     }
-  },
+  }
 );
 
 export const addThread = createAsyncThunk(
@@ -40,10 +46,11 @@ export const addThread = createAsyncThunk(
       const thread = await createThread({ title, body, category });
       return thread;
     } catch (error) {
-      console.error('addThread error:', error);
-      return rejectWithValue('Failed to create thread');
+      return rejectWithValue(
+        error.response?.data?.message || 'Failed to create thread'
+      );
     }
-  },
+  }
 );
 
 export const deleteThreadAsync = createAsyncThunk(
@@ -53,10 +60,11 @@ export const deleteThreadAsync = createAsyncThunk(
       await deleteThread(threadId);
       return threadId;
     } catch (error) {
-      console.error('deleteThread error:', error);
-      return rejectWithValue('Failed to delete thread');
+      return rejectWithValue(
+        error.response?.data?.message || 'Failed to delete thread'
+      );
     }
-  },
+  }
 );
 
 export const voteOnThread = createAsyncThunk(
@@ -69,21 +77,36 @@ export const voteOnThread = createAsyncThunk(
       await voteThread(threadId, voteType);
       return { threadId, voteType, userId: user.id };
     } catch (error) {
-      console.error('voteThread error:', error);
-      return rejectWithValue('Failed to vote');
+      return rejectWithValue(
+        error.response?.data?.message || 'Failed to vote'
+      );
     }
-  },
+  }
 );
 
-const applyVote = (thread, userId, voteType) => {
-  if (!thread) return;
+/* =========================
+   HELPERS
+========================= */
 
+const applyVote = (thread, userId, voteType) => {
+  if (!thread || !userId) return;
+
+  if (!thread.upVotesBy) thread.upVotesBy = [];
+  if (!thread.downVotesBy) thread.downVotesBy = [];
+
+  // remove previous vote
   thread.upVotesBy = thread.upVotesBy.filter((id) => id !== userId);
   thread.downVotesBy = thread.downVotesBy.filter((id) => id !== userId);
 
+  // apply new vote
   if (voteType === 1) thread.upVotesBy.push(userId);
   if (voteType === -1) thread.downVotesBy.push(userId);
+  // voteType === 0 → neutral (unvote)
 };
+
+/* =========================
+   SLICE
+========================= */
 
 const threadsSlice = createSlice({
   name: 'threads',
@@ -92,7 +115,9 @@ const threadsSlice = createSlice({
     threads: [],
     threadDetail: null,
     loading: false,
+    loadingVote: false,
     error: null,
+    errorVote: null,
   },
 
   reducers: {
@@ -103,17 +128,19 @@ const threadsSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+
+      /* ========= FETCH ALL ========= */
       .addCase(fetchThreads.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchThreads.fulfilled, (state, action) => {
         state.loading = false;
-        state.error = null;
-
         state.threads = action.payload.map((thread) => ({
           ...thread,
           totalComments: thread.totalComments ?? 0,
+          upVotesBy: thread.upVotesBy ?? [],
+          downVotesBy: thread.downVotesBy ?? [],
         }));
       })
       .addCase(fetchThreads.rejected, (state, action) => {
@@ -121,28 +148,37 @@ const threadsSlice = createSlice({
         state.error = action.payload;
       })
 
+      /* ========= FETCH DETAIL ========= */
       .addCase(fetchThreadDetail.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchThreadDetail.fulfilled, (state, action) => {
         state.loading = false;
-        state.threadDetail = action.payload;
+        state.threadDetail = {
+          ...action.payload,
+          upVotesBy: action.payload.upVotesBy ?? [],
+          downVotesBy: action.payload.downVotesBy ?? [],
+        };
       })
       .addCase(fetchThreadDetail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
+      /* ========= ADD THREAD ========= */
       .addCase(addThread.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(addThread.fulfilled, (state, action) => {
         state.loading = false;
+
         state.threads.unshift({
           ...action.payload,
           totalComments: 0,
+          upVotesBy: [],
+          downVotesBy: [],
         });
       })
       .addCase(addThread.rejected, (state, action) => {
@@ -150,20 +186,37 @@ const threadsSlice = createSlice({
         state.error = action.payload;
       })
 
+      /* ========= DELETE ========= */
       .addCase(deleteThreadAsync.fulfilled, (state, action) => {
-        state.threads = state.threads.filter((t) => t.id !== action.payload);
-      })
-
-      .addCase(voteOnThread.fulfilled, (state, action) => {
-        const { threadId, voteType, userId } = action.payload;
-
-        applyVote(
-          state.threads.find((t) => t.id === threadId),
-          userId,
-          voteType,
+        state.threads = state.threads.filter(
+          (t) => t.id !== action.payload
         );
 
+        if (state.threadDetail?.id === action.payload) {
+          state.threadDetail = null;
+        }
+      })
+
+      /* ========= VOTE ========= */
+      .addCase(voteOnThread.pending, (state) => {
+        state.loadingVote = true;
+        state.errorVote = null;
+      })
+      .addCase(voteOnThread.fulfilled, (state, action) => {
+        state.loadingVote = false;
+
+        const { threadId, voteType, userId } = action.payload;
+
+        const listThread = state.threads.find(
+          (t) => t.id === threadId
+        );
+
+        applyVote(listThread, userId, voteType);
         applyVote(state.threadDetail, userId, voteType);
+      })
+      .addCase(voteOnThread.rejected, (state, action) => {
+        state.loadingVote = false;
+        state.errorVote = action.payload;
       });
   },
 });

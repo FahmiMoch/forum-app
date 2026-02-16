@@ -11,6 +11,7 @@ export default function ThreadDetailContent({
   isDownVoted,
   token,
   onVote,
+  onVoteComment,
   onDeleteThread,
   onAddComment,
   onRequireLogin,
@@ -31,12 +32,14 @@ export default function ThreadDetailContent({
         onVote={onVote}
       />
 
-      <ThreadComments
-        comments={threadDetail.comments}
-        token={token}
-        onAddComment={onAddComment}
-        onRequireLogin={onRequireLogin}
-      />
+     <ThreadComments
+  comments={threadDetail.comments}
+  token={token}
+  onAddComment={onAddComment}
+  onRequireLogin={onRequireLogin}
+  onVote={onVoteComment}
+/>
+
     </div>
   );
 }

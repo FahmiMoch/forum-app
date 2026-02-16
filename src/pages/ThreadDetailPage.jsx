@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import ThreadDetailContent from "../components/thread/ThreadDetailContent";
 import Loading from "../components/loading/Loading";
@@ -8,13 +9,18 @@ import useThreadDetailData from "../features/hooks/thread/useThreadDetailData";
 import useAuthGuard from "../features/hooks/auth/useAuthGuard";
 import useThreadDetailActions from "../features/hooks/thread/useThreadDetailActions";
 
+import { voteOnComment } from "../features/comments/commentsSlice";
+
 export default function ThreadDetailPage() {
   const { threadId } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { threadDetail, loading, error } =
     useThreadDetailData(threadId);
+
   const { token, requireLogin, loginModal } = useAuthGuard();
+  const { user } = useSelector((state) => state.auth);
 
   const {
     isOwner,
@@ -28,6 +34,19 @@ export default function ThreadDetailPage() {
     threadId,
     requireLogin
   );
+
+  const handleVoteComment = (commentId, voteType) => {
+    if (!token) return requireLogin();
+
+    dispatch(
+      voteOnComment({
+        threadId,
+        commentId,
+        voteType,
+        userId: user.id,
+      })
+    );
+  };
 
   if (loading) return <Loading />;
   if (error) return <ThreadError />;
@@ -45,6 +64,7 @@ export default function ThreadDetailPage() {
         isDownVoted={isDownVoted}
         token={token}
         onVote={handleVote}
+        onVoteComment={handleVoteComment}
         onDeleteThread={() => handleDeleteThread(navigate)}
         onAddComment={handleAddComment}
         onRequireLogin={requireLogin}

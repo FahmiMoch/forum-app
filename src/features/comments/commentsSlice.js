@@ -4,7 +4,6 @@ import { createComment, voteComment } from '../../api/commentsApi';
 const VOTE_UP = 1;
 const VOTE_DOWN = -1;
 
-
 export const addComment = createAsyncThunk(
   'comments/addComment',
   async ({ threadId, content }, { rejectWithValue }) => {
@@ -13,10 +12,10 @@ export const addComment = createAsyncThunk(
       return { threadId, comment: response.data.comment };
     } catch (err) {
       return rejectWithValue(
-        err.response?.data?.message || 'Failed to add comment',
+        err.response?.data?.message || 'Failed to add comment'
       );
     }
-  },
+  }
 );
 
 export const voteOnComment = createAsyncThunk(
@@ -27,18 +26,24 @@ export const voteOnComment = createAsyncThunk(
       return { threadId, commentId, voteType, userId };
     } catch (err) {
       return rejectWithValue(
-        err.response?.data?.message || 'Failed to vote comment',
+        err.response?.data?.message || 'Failed to vote comment'
       );
     }
-  },
+  }
 );
 
 const applyVoteToComment = (comment, userId, voteType) => {
   if (!comment || !userId) return;
 
+  // ensure arrays exist
+  if (!comment.upVotesBy) comment.upVotesBy = [];
+  if (!comment.downVotesBy) comment.downVotesBy = [];
+
+  // remove existing vote
   comment.upVotesBy = comment.upVotesBy.filter((id) => id !== userId);
   comment.downVotesBy = comment.downVotesBy.filter((id) => id !== userId);
 
+  // apply new vote
   if (voteType === VOTE_UP) {
     comment.upVotesBy.push(userId);
   }
@@ -46,6 +51,8 @@ const applyVoteToComment = (comment, userId, voteType) => {
   if (voteType === VOTE_DOWN) {
     comment.downVotesBy.push(userId);
   }
+
+  // if voteType === 0 → do nothing (neutral)
 };
 
 const commentsSlice = createSlice({
@@ -53,10 +60,8 @@ const commentsSlice = createSlice({
 
   initialState: {
     commentsByThread: {},
-
     loadingAdd: false,
     loadingVote: false,
-
     errorAdd: null,
     errorVote: null,
   },
@@ -69,6 +74,7 @@ const commentsSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+      // ADD COMMENT
       .addCase(addComment.pending, (state) => {
         state.loadingAdd = true;
         state.errorAdd = null;
@@ -89,6 +95,7 @@ const commentsSlice = createSlice({
         state.errorAdd = action.payload;
       })
 
+      // VOTE COMMENT
       .addCase(voteOnComment.pending, (state) => {
         state.loadingVote = true;
         state.errorVote = null;

@@ -22,28 +22,37 @@ export default function useThreadDetailActions(
   );
 
   const isUpVoted = useMemo(
-    () => (userId ? threadDetail?.upVotesBy.includes(userId) : false),
+    () => (userId ? threadDetail?.upVotesBy?.includes(userId) : false),
     [userId, threadDetail]
   );
 
   const isDownVoted = useMemo(
-    () => (userId ? threadDetail?.downVotesBy.includes(userId) : false),
+    () => (userId ? threadDetail?.downVotesBy?.includes(userId) : false),
     [userId, threadDetail]
   );
 
   const handleVote = (voteType) => {
     if (!token) return requireLogin();
-    dispatch(voteOnThread({ threadId, voteType }));
+
+    dispatch(
+      voteOnThread({
+        threadId,
+        voteType,
+      })
+    );
   };
 
   const handleAddComment = (e) => {
     e.preventDefault();
     if (!token) return requireLogin();
 
+    const content = e.target.comment.value.trim();
+    if (!content) return;
+
     dispatch(
       addComment({
         threadId,
-        content: e.target.comment.value,
+        content,
       })
     );
 
