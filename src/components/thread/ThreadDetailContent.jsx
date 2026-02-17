@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+
 import ThreadHeader from "./ThreadHeader";
 import ThreadBody from "./ThreadBody";
 import ThreadComments from "./ThreadComments";
@@ -9,13 +11,16 @@ export default function ThreadDetailContent({
   isOwner,
   isUpVoted,
   isDownVoted,
-  token,
   onVote,
   onVoteComment,
   onDeleteThread,
   onAddComment,
   onRequireLogin,
 }) {
+  const comments = useSelector(
+    (state) => state.comments.commentsByThread[threadId] || []
+  );
+
   return (
     <div className="thread-detail">
       <ThreadHeader
@@ -32,14 +37,13 @@ export default function ThreadDetailContent({
         onVote={onVote}
       />
 
-     <ThreadComments
-  comments={threadDetail.comments}
-  token={token}
-  onAddComment={onAddComment}
-  onRequireLogin={onRequireLogin}
-  onVote={onVoteComment}
-/>
-
+      <ThreadComments
+        comments={comments}
+        threadId={threadId}
+        onAddComment={onAddComment}
+        onRequireLogin={onRequireLogin}
+        onVote={onVoteComment}
+      />
     </div>
   );
 }

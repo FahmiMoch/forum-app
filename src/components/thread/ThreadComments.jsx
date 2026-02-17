@@ -1,11 +1,6 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPaperPlane,
-  faChevronUp,
-  faChevronDown,
-} from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
+import VoteButton from "./VoteButton";
 import { formatDate } from "../../utils/FormatDate";
 
 function Avatar({ user }) {
@@ -15,20 +10,19 @@ function Avatar({ user }) {
 
   return (
     <div className="avatar-fallback">
-      {user?.name?.charAt(0).toUpperCase()}
+      {user?.name?.charAt(0)?.toUpperCase() || "?"}
     </div>
   );
 }
 
 export default function ThreadComments({
-  comments,
-  token,
+  comments = [],
+  threadId,
   onAddComment,
   onRequireLogin,
   onVote,
 }) {
   const { user } = useSelector((state) => state.auth);
-
   return (
     <>
       <h4>Komentar</h4>
@@ -49,60 +43,67 @@ export default function ThreadComments({
                 <span>{formatDate(c.createdAt)}</span>
 
                 <p>
-                  {c.content.replace(/<br\s*\/?>/gi, "\n")}
+                  {c.content?.replace(/<br\s*\/?>/gi, "\n")}
                 </p>
 
-                {/* 🔥 VOTE SECTION */}
-                <div className="comment-vote">
-                  <button
-                    className={`vote-btn up ${isUpVoted ? "active" : ""}`}
-                    onClick={() =>
-                      token
-                        ? onVote(c.id, isUpVoted ? 0 : 1)
-                        : onRequireLogin()
-                    }
-                  >
-                    <FontAwesomeIcon icon={faChevronUp} />
-                    <span>{c.upVotesBy?.length || 0}</span>
-                  </button>
+                <VoteButton
+                  upVotes={c.upVotesBy?.length || 0}
+                  downVotes={c.downVotesBy?.length || 0}
+                  isUpVoted={isUpVoted}
+                  isDownVoted={isDownVoted}
+                  onVote={(voteType) => {
 
-                  <button
-                    className={`vote-btn down ${
-                      isDownVoted ? "active" : ""
-                    }`}
-                    onClick={() =>
-                      token
-                        ? onVote(c.id, isDownVoted ? 0 : -1)
-                        : onRequireLogin()
+                    if (!user) {
+                      if (onRequireLogin) onRequireLogin();
+                      return;
                     }
-                  >
-                    <FontAwesomeIcon icon={faChevronDown} />
-                    <span>{c.downVotesBy?.length || 0}</span>
-                  </button>
-                </div>
+
+                    if (!onVote) {
+                      return;
+                    }
+
+                    onVote(threadId, c.id, voteType);
+                  }}
+                />
               </div>
             </li>
           );
         })}
       </ul>
 
-      {token ? (
-        <form className="comment-form" onSubmit={onAddComment}>
+      {user ? (
+        <form
+          className="comment-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+
+            if (!onAddComment) {
+              return;
+            }
+
+            onAddComment(e);
+          }}
+        >
           <input
             name="comment"
             placeholder="Tulis komentar..."
             required
           />
-          <button type="submit">
-            <FontAwesomeIcon icon={faPaperPlane} />
-          </button>
+          <button type="submit">Kirim</button>
         </form>
       ) : (
         <div className="comment-login-hint">
           <p>
             <strong>Login dulu</strong> untuk ikut komentar
           </p>
-          <button onClick={onRequireLogin}>Login sekarang</button>
+          <button
+            type="button"
+            onClick={() => {
+              if (onRequireLogin) onRequireLogin();
+            }}
+          >
+            Login sekarang
+          </button>
         </div>
       )}
     </>

@@ -13,7 +13,7 @@ function Avatar({ user }) {
   );
 }
 
-export default function ThreadHeader({ threadDetail, isOwner, onDelete }) {
+export default function ThreadHeader({ threadDetail }) {
   return (
     <div className="thread-header-detail">
       <div className="thread-main-detail">

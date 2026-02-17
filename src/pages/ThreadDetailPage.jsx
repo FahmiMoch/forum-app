@@ -1,5 +1,6 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 import ThreadDetailContent from "../components/thread/ThreadDetailContent";
 import Loading from "../components/loading/Loading";
@@ -9,18 +10,19 @@ import useThreadDetailData from "../features/hooks/thread/useThreadDetailData";
 import useAuthGuard from "../features/hooks/auth/useAuthGuard";
 import useThreadDetailActions from "../features/hooks/thread/useThreadDetailActions";
 
-import { voteOnComment } from "../features/comments/commentsSlice";
+import {
+  voteOnComment,
+  setCommentsForThread,
+} from "../features/comments/commentsSlice";
 
 export default function ThreadDetailPage() {
   const { threadId } = useParams();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { threadDetail, loading, error } =
     useThreadDetailData(threadId);
 
   const { token, requireLogin, loginModal } = useAuthGuard();
-  const { user } = useSelector((state) => state.auth);
 
   const {
     isOwner,
@@ -28,14 +30,34 @@ export default function ThreadDetailPage() {
     isDownVoted,
     handleVote,
     handleAddComment,
-    handleDeleteThread,
   } = useThreadDetailActions(
     threadDetail,
     threadId,
     requireLogin
   );
 
-  const handleVoteComment = (commentId, voteType) => {
+  /*
+    =================================
+    SEED COMMENTS KE REDUX (PENTING)
+    =================================
+  */
+  useEffect(() => {
+    if (threadDetail?.comments) {
+      dispatch(
+        setCommentsForThread({
+          threadId,
+          comments: threadDetail.comments,
+        })
+      );
+    }
+  }, [threadDetail, threadId, dispatch]);
+
+  /*
+    =================================
+    VOTE COMMENT FIXED
+    =================================
+  */
+  const handleVoteComment = (threadId, commentId, voteType) => {
     if (!token) return requireLogin();
 
     dispatch(
@@ -43,7 +65,6 @@ export default function ThreadDetailPage() {
         threadId,
         commentId,
         voteType,
-        userId: user.id,
       })
     );
   };
@@ -65,7 +86,6 @@ export default function ThreadDetailPage() {
         token={token}
         onVote={handleVote}
         onVoteComment={handleVoteComment}
-        onDeleteThread={() => handleDeleteThread(navigate)}
         onAddComment={handleAddComment}
         onRequireLogin={requireLogin}
       />
