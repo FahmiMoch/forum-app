@@ -1,46 +1,38 @@
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import AuthForm from "../components/auth/AuthForm";
 import useRegister from "../features/hooks/auth/useRegister";
 
 export default function RegisterPage() {
-  const {
-    name,
-    email,
-    password,
-    loading,
-    setName,
-    setEmail,
-    setPassword,
-    handleSubmit,
-  } = useRegister();
+  const { handleRegister, loading } = useRegister();
+
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = (data) => {
+    handleRegister(data);
+  };
 
   return (
     <AuthForm
       title="Daftar"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       buttonText={loading ? "Registering..." : "Register"}
       inputs={[
         {
           type: "text",
           placeholder: "Masukkan Nama",
-          value: name,
-          onChange: (e) => setName(e.target.value),
-          required: true,
+          ...register("name", { required: true }),
         },
         {
           type: "email",
           placeholder: "Masukkan Email",
-          value: email,
-          onChange: (e) => setEmail(e.target.value),
-          required: true,
+          ...register("email", { required: true }),
         },
         {
           type: "password",
           placeholder: "Masukkan Password",
-          value: password,
-          onChange: (e) => setPassword(e.target.value),
           minLength: 6,
-          required: true,
+          ...register("password", { required: true }),
         },
       ]}
       footer={

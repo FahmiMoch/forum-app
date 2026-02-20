@@ -1,11 +1,6 @@
 export default function CreateThreadForm({
-  title,
-  category,
-  body,
+  register,
   loading,
-  onTitleChange,
-  onCategoryChange,
-  onBodyChange,
   onSubmit,
 }) {
   return (
@@ -15,24 +10,19 @@ export default function CreateThreadForm({
 
         <form onSubmit={onSubmit}>
           <input
-            value={title}
-            onChange={onTitleChange}
+            {...register("title", { required: true })}
             placeholder="Masukkan Judul Thread"
-            required
           />
 
           <input
-            value={category}
-            onChange={onCategoryChange}
+            {...register("category")}
             placeholder="Masukkan Kategori"
           />
 
           <textarea
-            value={body}
-            onChange={onBodyChange}
+            {...register("body", { required: true })}
             rows={6}
             placeholder="Tulis isi thread"
-            required
           />
 
           <button disabled={loading}>

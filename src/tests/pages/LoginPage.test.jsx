@@ -1,25 +1,19 @@
 import '@testing-library/jest-dom';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import LoginPage from '../../pages/LoginPage';
 import useLogin from '../../features/hooks/auth/useLogin';
 
 jest.mock('../../features/hooks/auth/useLogin');
 
 describe('LoginPage', () => {
-  const mockSetEmail = jest.fn();
-  const mockSetPassword = jest.fn();
-  const mockHandleSubmit = jest.fn((e) => e.preventDefault());
+  const mockHandleLogin = jest.fn();
 
   beforeEach(() => {
-    useLogin.mockReturnValue({
-      email: '',
-      password: '',
-      setEmail: mockSetEmail,
-      setPassword: mockSetPassword,
-      handleSubmit: mockHandleSubmit,
-    });
-
     jest.clearAllMocks();
+    useLogin.mockReturnValue({
+      handleLogin: mockHandleLogin,
+    });
   });
 
   it('should render login form correctly', () => {
@@ -28,54 +22,39 @@ describe('LoginPage', () => {
     expect(screen.getByText('Masuk')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Masukkan Email')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Masukkan Password')).toBeInTheDocument();
-    expect(screen.getByText('Login')).toBeInTheDocument();
   });
 
-  it('should call setEmail when email input changes', () => {
+  it('should call handleLogin when form is submitted', async () => {
     render(<LoginPage />);
 
-    fireEvent.change(
-      screen.getByPlaceholderText('Masukkan Email'),
-      { target: { value: 'test@mail.com' } }
-    );
+    const emailInput = screen.getByPlaceholderText('Masukkan Email');
+    const passwordInput = screen.getByPlaceholderText('Masukkan Password');
 
-    expect(mockSetEmail).toHaveBeenCalledWith('test@mail.com');
-  });
+    await userEvent.type(emailInput, 'test@mail.com');
+    await userEvent.type(passwordInput, '123456');
+    await userEvent.click(screen.getByText('Login'));
 
-  it('should call setPassword when password input changes', () => {
-    render(<LoginPage />);
-
-    fireEvent.change(
-      screen.getByPlaceholderText('Masukkan Password'),
-      { target: { value: '123456' } }
-    );
-
-    expect(mockSetPassword).toHaveBeenCalledWith('123456');
-  });
-
-  it('should call handleSubmit when form is submitted', () => {
-    render(<LoginPage />);
-
-    const form = document.querySelector('.auth-form');
-    fireEvent.submit(form);
-
-    expect(mockHandleSubmit).toHaveBeenCalled();
-  });
-
-  it('should redirect to register page when clicking Daftar', () => {
-  const originalLocation = window.location;
-
-  delete window.location;
-  window.location = {
-    href: '',
-  };
-
-  render(<LoginPage />);
-
-  fireEvent.click(screen.getByText('Daftar'));
-
-  expect(window.location).toBe('/register');
-
-  window.location = originalLocation;
+   await waitFor(() => {
+  expect(mockHandleLogin).toHaveBeenCalled();
 });
+
+const firstCall = mockHandleLogin.mock.calls[0][0];
+
+expect(firstCall).toEqual({
+  email: 'test@mail.com',
+  password: '123456',
+});
+  });
+
+  it('should redirect to register page when clicking Daftar', async () => {
+    const originalLocation = window.location;
+    delete window.location;
+    window.location = '';
+
+    render(<LoginPage />);
+    await userEvent.click(screen.getByText('Daftar'));
+
+    expect(window.location).toBe('/register');
+    window.location = originalLocation;
+  });
 });
