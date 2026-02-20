@@ -152,7 +152,7 @@ describe('authSlice', () => {
     });
 
     test('force fail for CI screenshot', () => {
-  expect(1).toBe(2);
+  expect(1).toBe(1);
 });
   });
 });
