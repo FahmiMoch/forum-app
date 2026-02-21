@@ -150,9 +150,5 @@ describe('authSlice', () => {
       expect(state.loading).toBe(false);
       expect(state.error).toBe('Register failed');
     });
-
-    test('force fail for CI screenshot', () => {
-  expect(1).toBe(1);
-});
   });
 });
