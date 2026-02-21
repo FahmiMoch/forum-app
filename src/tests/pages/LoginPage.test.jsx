@@ -1,3 +1,10 @@
+/**
+ * Skenario:
+ * - should render login form correctly
+ * - should call handleLogin when form is submitted
+ * - should redirect to register page when clicking Daftar
+ */
+
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -34,16 +41,16 @@ describe('LoginPage', () => {
     await userEvent.type(passwordInput, '123456');
     await userEvent.click(screen.getByText('Login'));
 
-   await waitFor(() => {
-  expect(mockHandleLogin).toHaveBeenCalled();
-});
+    await waitFor(() => {
+      expect(mockHandleLogin).toHaveBeenCalled();
+    });
 
-const firstCall = mockHandleLogin.mock.calls[0][0];
+    const firstCall = mockHandleLogin.mock.calls[0][0];
 
-expect(firstCall).toEqual({
-  email: 'test@mail.com',
-  password: '123456',
-});
+    expect(firstCall).toEqual({
+      email: 'test@mail.com',
+      password: '123456',
+    });
   });
 
   it('should redirect to register page when clicking Daftar', async () => {

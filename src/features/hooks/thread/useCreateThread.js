@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
-import { addThread } from "../../thread/threadsSlice";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { addThread } from '../../thread/threadsSlice';
+import { useNavigate } from 'react-router-dom';
 
 export default function useCreateThread() {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ export default function useCreateThread() {
         addThread({ title, body, category })
       ).unwrap();
 
-      navigate("/");
+      navigate('/');
     } catch (err) {
       alert(err);
     }

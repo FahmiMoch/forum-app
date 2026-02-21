@@ -1,3 +1,18 @@
+/**
+ * Skenario:
+ * - should return initial state
+ * - should handle logout correctly
+ * - should handle finishAuthLoading correctly
+ * - should handle login.pending correctly
+ * - should handle login.fulfilled correctly
+ * - should handle login.rejected correctly
+ * - should handle fetchMe.fulfilled correctly
+ * - should handle fetchMe.rejected correctly
+ * - should handle register.pending correctly
+ * - should handle register.fulfilled correctly
+ * - should handle register.rejected correctly
+ */
+
 import reducer, {
   logout,
   finishAuthLoading,
@@ -150,9 +165,5 @@ describe('authSlice', () => {
       expect(state.loading).toBe(false);
       expect(state.error).toBe('Register failed');
     });
-
-    test('force fail for CI screenshot', () => {
-  expect(1).toBe(1);
-});
   });
-});
+    });

@@ -1,3 +1,14 @@
+/**
+ * Skenario:
+ * - should render vote counts correctly
+ * - should call onVote(1) when upvote clicked and not voted yet
+ * - should call onVote(0) when upvote clicked and already upvoted
+ * - should call onVote(-1) when downvote clicked and not voted yet
+ * - should call onVote(0) when downvote clicked and already downvoted
+ * - should apply active class when upvoted
+ * - should apply active class when downvoted
+ */
+
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
 import VoteButton from '../../components/thread/VoteButton';
@@ -91,4 +102,4 @@ describe('VoteButton Component', () => {
     const downButton = screen.getByText(/Vote Down/).closest('button');
     expect(downButton.className).toMatch(/active/);
   });
-});
+  });

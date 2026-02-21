@@ -1,13 +1,13 @@
-import { useDispatch } from "react-redux";
-import { login, fetchMe } from "../../auth/authSlice";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { login, fetchMe } from '../../auth/authSlice';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function useLogin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || '/';
 
   const handleLogin = async ({ email, password }) => {
     try {
@@ -15,7 +15,7 @@ export default function useLogin() {
       await dispatch(fetchMe()).unwrap();
       navigate(from, { replace: true });
     } catch {
-      alert("Login gagal");
+      alert('Login gagal');
     }
   };
 
