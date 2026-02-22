@@ -21,8 +21,6 @@ import reducer, {
   fetchMe,
 } from '../../features/auth/authSlice';
 
-import * as authApi from '../../api/authApi';
-
 jest.mock('../../api/authApi');
 
 describe('authSlice', () => {
