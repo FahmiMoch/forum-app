@@ -6,38 +6,52 @@ export const fetchLeaderboards = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const data = await getLeaderboards();
-      return data;
+
+      const sortedLeaderboards = [...data.leaderboards].sort(
+        (a, b) => b.score - a.score
+      );
+
+      return sortedLeaderboards;
+
     } catch (err) {
       return rejectWithValue(
-        err.response?.data || 'Failed to fetch leaderboard',
+        err.response?.data || 'Failed to fetch leaderboard'
       );
     }
-  },
+  }
 );
 
 const leaderboardSlice = createSlice({
   name: 'leaderboard',
+
   initialState: {
-    users: [],
+    leaderboards: [],
     loading: false,
     error: null,
   },
+
   reducers: {},
+
   extraReducers: (builder) => {
+
     builder
       .addCase(fetchLeaderboards.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
+
       .addCase(fetchLeaderboards.fulfilled, (state, action) => {
         state.loading = false;
-        state.users = action.payload;
+        state.leaderboards = action.payload;
       })
+
       .addCase(fetchLeaderboards.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
+
   },
+
 });
 
 export default leaderboardSlice.reducer;

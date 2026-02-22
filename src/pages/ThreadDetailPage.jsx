@@ -36,11 +36,7 @@ export default function ThreadDetailPage() {
     requireLogin
   );
 
-  /*
-    =================================
-    SEED COMMENTS KE REDUX (PENTING)
-    =================================
-  */
+
   useEffect(() => {
     if (threadDetail?.comments) {
       dispatch(
@@ -52,11 +48,6 @@ export default function ThreadDetailPage() {
     }
   }, [threadDetail, threadId, dispatch]);
 
-  /*
-    =================================
-    VOTE COMMENT FIXED
-    =================================
-  */
   const handleVoteComment = (threadId, commentId, voteType) => {
     if (!token) return requireLogin();
 

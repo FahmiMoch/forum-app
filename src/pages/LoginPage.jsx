@@ -10,7 +10,7 @@ export default function LoginPage() {
     <AuthForm
       title="Masuk"
       buttonText="Login"
-      register={register} // 🔥 pass register
+      register={register}
       onSubmit={handleSubmit(handleLogin)}
       inputs={[
         {

@@ -166,4 +166,4 @@ describe('authSlice', () => {
       expect(state.error).toBe('Register failed');
     });
   });
-    });
+});

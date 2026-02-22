@@ -11,7 +11,7 @@ import usersReducer from '../features/users/usersSlice';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth'], // cuma simpan auth
+  whitelist: ['auth'], 
 };
 
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
