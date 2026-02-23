@@ -1,14 +1,14 @@
 export default function LeaderboardItem({ item, index }) {
   return (
     <li
-      className={`leaderboard-item ${index < 3 ? "top-rank" : ""}`}
+      className={`leaderboard-item ${index < 3 ? 'top-rank' : ''}`}
     >
       <span className={`rank rank-${index + 1}`}>
         {index + 1}
       </span>
 
       <img
-        src={item.user.avatar || "https://via.placeholder.com/40"}
+        src={item.user.avatar || 'https://via.placeholder.com/40'}
         alt={item.user.name}
         className="avatar"
       />

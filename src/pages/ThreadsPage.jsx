@@ -1,10 +1,10 @@
-import ForumLeft from "../components/forum/ForumLeft";
-import ForumCenter from "../components/forum/ForumCenter";
-import ForumRight from "../components/forum/ForumRight";
+import ForumLeft from '../components/forum/ForumLeft';
+import ForumCenter from '../components/forum/ForumCenter';
+import ForumRight from '../components/forum/ForumRight';
 
-import useThreadsData from "../features/hooks/thread/useThreadsData";
-import useThreadDerivedData from "../features/hooks/thread/useThreadDerivedData";
-import useCategoryFilter from "../features/hooks/forum/useCategoryFilter";
+import useThreadsData from '../features/hooks/thread/useThreadsData';
+import useThreadDerivedData from '../features/hooks/thread/useThreadDerivedData';
+import useCategoryFilter from '../features/hooks/forum/useCategoryFilter';
 
 export default function ThreadsPage() {
   const {

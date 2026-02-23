@@ -1,4 +1,4 @@
-import LeaderboardPage from "../../pages/LeaderboardPage";
+import LeaderboardPage from '../../pages/LeaderboardPage';
 
 export default function ForumLeft() {
   return (

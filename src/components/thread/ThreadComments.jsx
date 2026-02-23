@@ -1,7 +1,7 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import VoteButton from "./VoteButton";
-import { formatDate } from "../../utils/FormatDate";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import VoteButton from './VoteButton';
+import { formatDate } from '../../utils/FormatDate';
 
 function Avatar({ user }) {
   if (user?.avatar) {
@@ -10,7 +10,7 @@ function Avatar({ user }) {
 
   return (
     <div className="avatar-fallback">
-      {user?.name?.charAt(0)?.toUpperCase() || "?"}
+      {user?.name?.charAt(0)?.toUpperCase() || '?'}
     </div>
   );
 }
@@ -43,7 +43,7 @@ export default function ThreadComments({
                 <span>{formatDate(c.createdAt)}</span>
 
                 <p>
-                  {c.content?.replace(/<br\s*\/?>/gi, "\n")}
+                  {c.content?.replace(/<br\s*\/?>/gi, '\n')}
                 </p>
 
                 <VoteButton

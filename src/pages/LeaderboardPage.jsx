@@ -1,11 +1,11 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Loading from "../components/loading/Loading";
-import LeaderboardList from "../components/leaderboard/LeaderboardList";
-import ThreadError from "../components/error/Error";
+import Loading from '../components/loading/Loading';
+import LeaderboardList from '../components/leaderboard/LeaderboardList';
+import ThreadError from '../components/error/Error';
 
-import { fetchLeaderboards } from "../features/leaderboard/leaderboardSlice";
+import { fetchLeaderboards } from '../features/leaderboard/leaderboardSlice';
 
 export default function LeaderboardPage() {
 

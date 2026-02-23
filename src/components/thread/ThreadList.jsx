@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { formatDate } from "../../utils/FormatDate";
-import Loading from "../loading/Loading";
-import ThreadError from "../error/Error";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { formatDate } from '../../utils/FormatDate';
+import Loading from '../loading/Loading';
+import ThreadError from '../error/Error';
 
 export default function ThreadList({ threads, usersById, loading, error }) {
   if (loading) {
@@ -28,14 +28,14 @@ export default function ThreadList({ threads, usersById, loading, error }) {
               <img
                 src={
                   user?.avatar ||
-                  `https://ui-avatars.com/api/?name=${user?.name || "User"}`
+                  `https://ui-avatars.com/api/?name=${user?.name || 'User'}`
                 }
-                alt={user?.name || "Anonymous"}
+                alt={user?.name || 'Anonymous'}
                 className="thread-avatar"
               />
 
               <div className="thread-info">
-                <strong>{user?.name || "Anonymous"}</strong>
+                <strong>{user?.name || 'Anonymous'}</strong>
                 <div className="thread-time">
                   {formatDate(thread.createdAt)}
                 </div>
@@ -47,12 +47,12 @@ export default function ThreadList({ threads, usersById, loading, error }) {
             </Link>
 
             <p className="thread-body">
-              {(thread.body || "").replace(/<[^>]*>?/gm, "").slice(0, 120)}
+              {(thread.body || '').replace(/<[^>]*>?/gm, '').slice(0, 120)}
               ...
             </p>
 
             <div className="thread-meta">
-              <span>#{thread.category || "General"}</span>
+              <span>#{thread.category || 'General'}</span>
               <span>{thread.totalComments || 0} komentar</span>
             </div>
           </li>

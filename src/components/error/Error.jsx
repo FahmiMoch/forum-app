@@ -1,6 +1,6 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 export default function Error({ message, onRetry }) {
   return (
@@ -12,7 +12,7 @@ export default function Error({ message, onRetry }) {
         />
 
         <h3>Terjadi Kesalahan</h3>
-        <p>{message || "Gagal memuat data"}</p>
+        <p>{message || 'Gagal memuat data'}</p>
 
         {onRetry && (
           <button className="threads-error-button" onClick={onRetry}>

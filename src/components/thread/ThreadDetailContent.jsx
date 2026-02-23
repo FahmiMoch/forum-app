@@ -1,9 +1,9 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React from 'react';
+import { useSelector } from 'react-redux';
 
-import ThreadHeader from "./ThreadHeader";
-import ThreadBody from "./ThreadBody";
-import ThreadComments from "./ThreadComments";
+import ThreadHeader from './ThreadHeader';
+import ThreadBody from './ThreadBody';
+import ThreadComments from './ThreadComments';
 
 export default function ThreadDetailContent({
   threadDetail,

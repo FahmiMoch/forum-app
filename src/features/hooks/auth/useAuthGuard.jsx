@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import RequireLoginModal from "../../../components/auth/RequireLoginModal";
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import RequireLoginModal from '../../../components/auth/RequireLoginModal';
 
 export default function useAuthGuard() {
   const { token } = useSelector((state) => state.auth);

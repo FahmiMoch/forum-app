@@ -1,4 +1,4 @@
-import LeaderboardItem from "./LeaderboardItem";
+import LeaderboardItem from './LeaderboardItem';
 
 export default function LeaderboardList({ leaderboards }) {
   return (

@@ -102,4 +102,4 @@ describe('VoteButton Component', () => {
     const downButton = screen.getByText(/Vote Down/).closest('button');
     expect(downButton.className).toMatch(/active/);
   });
-  });
+});

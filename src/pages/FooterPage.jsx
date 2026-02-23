@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function FooterPage() {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ export default function FooterPage() {
       <div className="footer-left">
         <span
           className="footer-logo"
-          onClick={() => navigate("/")}
+          onClick={() => navigate('/')}
           role="button"
         >
           <i className="fas fa-comments"></i>

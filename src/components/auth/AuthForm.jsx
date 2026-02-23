@@ -18,7 +18,7 @@ export default function AuthForm({
               data-testid={input.name}
               type={input.type}
               placeholder={input.placeholder}
-              {...register(input.name)}  
+              {...register(input.name)}
             />
 
             {input.error && (

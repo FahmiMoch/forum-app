@@ -10,23 +10,23 @@ export default function CreateThreadForm({
 
         <form onSubmit={onSubmit}>
           <input
-            {...register("title", { required: true })}
+            {...register('title', { required: true })}
             placeholder="Masukkan Judul Thread"
           />
 
           <input
-            {...register("category")}
+            {...register('category')}
             placeholder="Masukkan Kategori"
           />
 
           <textarea
-            {...register("body", { required: true })}
+            {...register('body', { required: true })}
             rows={6}
             placeholder="Tulis isi thread"
           />
 
           <button disabled={loading}>
-            {loading ? "Send..." : "Kirim"}
+            {loading ? 'Send...' : 'Kirim'}
           </button>
         </form>
       </div>

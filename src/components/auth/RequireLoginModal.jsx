@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function RequireLoginModal({ open, onClose }) {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ export default function RequireLoginModal({ open, onClose }) {
 
   const handleLogin = () => {
     onClose();
-    navigate("/login", {
+    navigate('/login', {
       state: { from: location },
     });
   };

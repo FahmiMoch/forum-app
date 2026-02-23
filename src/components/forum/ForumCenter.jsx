@@ -1,4 +1,4 @@
-import ThreadList from "../thread/ThreadList";
+import ThreadList from '../thread/ThreadList';
 
 export default function ForumCenter({
   threads,

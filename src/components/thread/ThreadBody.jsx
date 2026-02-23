@@ -1,5 +1,5 @@
-import React from "react";
-import VoteButton from "./VoteButton";
+import React from 'react';
+import VoteButton from './VoteButton';
 
 export default function ThreadBody({
   threadDetail,

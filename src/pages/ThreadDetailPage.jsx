@@ -1,19 +1,19 @@
-import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
-import ThreadDetailContent from "../components/thread/ThreadDetailContent";
-import Loading from "../components/loading/Loading";
-import ThreadError from "../components/error/Error";
+import ThreadDetailContent from '../components/thread/ThreadDetailContent';
+import Loading from '../components/loading/Loading';
+import ThreadError from '../components/error/Error';
 
-import useThreadDetailData from "../features/hooks/thread/useThreadDetailData";
-import useAuthGuard from "../features/hooks/auth/useAuthGuard";
-import useThreadDetailActions from "../features/hooks/thread/useThreadDetailActions";
+import useThreadDetailData from '../features/hooks/thread/useThreadDetailData';
+import useAuthGuard from '../features/hooks/auth/useAuthGuard';
+import useThreadDetailActions from '../features/hooks/thread/useThreadDetailActions';
 
 import {
   voteOnComment,
   setCommentsForThread,
-} from "../features/comments/commentsSlice";
+} from '../features/comments/commentsSlice';
 
 export default function ThreadDetailPage() {
   const { threadId } = useParams();

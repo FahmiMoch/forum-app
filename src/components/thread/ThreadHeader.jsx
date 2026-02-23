@@ -1,5 +1,5 @@
-import React from "react";
-import { formatDate } from "../../utils/FormatDate";
+import React from 'react';
+import { formatDate } from '../../utils/FormatDate';
 
 function Avatar({ user }) {
   if (user?.avatar) {

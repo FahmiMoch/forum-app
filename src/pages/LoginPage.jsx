@@ -1,6 +1,6 @@
-import { useForm } from "react-hook-form";
-import AuthForm from "../components/auth/AuthForm";
-import useLogin from "../features/hooks/auth/useLogin";
+import { useForm } from 'react-hook-form';
+import AuthForm from '../components/auth/AuthForm';
+import useLogin from '../features/hooks/auth/useLogin';
 
 export default function LoginPage() {
   const { handleLogin } = useLogin();
@@ -14,22 +14,22 @@ export default function LoginPage() {
       onSubmit={handleSubmit(handleLogin)}
       inputs={[
         {
-          name: "email",
-          type: "email",
-          placeholder: "Masukkan Email",
+          name: 'email',
+          type: 'email',
+          placeholder: 'Masukkan Email',
         },
         {
-          name: "password",
-          type: "password",
-          placeholder: "Masukkan Password",
+          name: 'password',
+          type: 'password',
+          placeholder: 'Masukkan Password',
         },
       ]}
       footer={
         <>
-          Belum punya akun?{" "}
+          Belum punya akun?{' '}
           <span
             className="auth-link"
-            onClick={() => (window.location = "/register")}
+            onClick={() => (window.location = '/register')}
           >
             Daftar
           </span>

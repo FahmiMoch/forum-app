@@ -3,18 +3,18 @@ import {
   Routes,
   Route,
   Navigate,
-} from "react-router-dom";
+} from 'react-router-dom';
 
-import Navbar from "../components/navbar/Navbar";
-import FooterPage from "../pages/FooterPage";
+import Navbar from '../components/navbar/Navbar';
+import FooterPage from '../pages/FooterPage';
 
-import ThreadsPage from "../pages/ThreadsPage";
-import ThreadDetailPage from "../pages/ThreadDetailPage";
-import CreateThreadPage from "../pages/CreateThreadPage";
-import LoginPage from "../pages/LoginPage";
-import RegisterPage from "../pages/RegisterPage";
-import LeaderboardPage from "../pages/LeaderboardPage";
-import ProtectedRoute from "./ProtectedRoute";
+import ThreadsPage from '../pages/ThreadsPage';
+import ThreadDetailPage from '../pages/ThreadDetailPage';
+import CreateThreadPage from '../pages/CreateThreadPage';
+import LoginPage from '../pages/LoginPage';
+import RegisterPage from '../pages/RegisterPage';
+import LeaderboardPage from '../pages/LeaderboardPage';
+import ProtectedRoute from './ProtectedRoute';
 
 export default function AppRoutes() {
   return (
